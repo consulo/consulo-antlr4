@@ -1,0 +1,149 @@
+<idea-plugin>
+	<id>org.antlr.intellij.plugin</id>
+	<name>ANTLR v4 grammar plugin</name>
+	<version>1.8.4</version>
+	<vendor email="parrt@antlr.org" url="https://github.com/antlr/intellij-plugin-v4">ANTLR Project</vendor>
+
+	<description><![CDATA[
+  <p>
+      This plugin is for ANTLR v4 grammars and includes ANTLR 4.7. It works with
+      Intellij 15, 2016.1-2017.3.  It should work in other Jetbrains IDEs.
+     </p>
+
+     <ul>
+     <li> syntax highlighting
+     <li> syntax error checking
+     <li> semantic error checking
+     <li> navigation window
+     <li> goto-declaration
+     <li> find usages
+     <li> rename tokens
+     <li> rename rules
+     <li> comment grammar rule lines with meta-/ (1.7)
+     <li> grammar/comment folding (1.7)
+     <li> generates parser code; shortcut (ctrl-shift-G / meta-shift-G) but it's in Tools menu and popups.
+     <li> code completion for tokens, rule names;
+     <li> finds tokenVocab option for code gen if there is a tokenVocab option, don't warn about implicit tokens.
+     <li> handles separate parsers and lectures like TParser.g4 and TLexer.g4 (1.7)
+     <li> Parse tree nodes show the alternative number the parser chose to match that node. (1.7)
+     <li> has live grammar interpreter for grammar preview. Right click on rule and say "Test ANTLR Rule".
+     <li> view parse trees in hierarchy (sideways tree) view. (1.8)
+     <li> can view parse trees for input matched in more than one way (ambiguities) (1.7)
+     <li> can view lookahead trees to show how input directed ANTLR to match a particular alternative (1.7)
+	<li> changes to grammar seen in parse tree upon save of grammar.
+	<li> works with all Jetbrains IDEs (1.8)
+	<li> refactoring: extract rule, inline rule (1.8), dup rule to make refs unique (1.9)
+     </ul>
+
+      <p>Generates code in <project-root>/gen/package/YourGrammarRecognizer.java
+      unless you override in the configuration dialog.
+      Shortcut to generate parsers is ctrl-shift-G / meta-shift-G but it's in Tools menu, popups.
+
+      Code completion for tokens, rule names. finds tokenVocab option for code gen
+          if there is a tokenVocab option, don't warn about implicit tokens.
+          shortcut conflicted with grammar-kit plugin. Has live grammar interpreter
+          for grammar preview. Right click on rule and say "Test ANTLR Rule".
+          Changes to grammar seen in parse tree upon save of grammar.
+  <p>
+          You can configure the ANTLR tool options per grammar file; right-click
+          in a grammar or on a grammar element within the structured view.
+          When you change and save a grammar, it automatically builds with ANTLR
+          in the background according to the preferences you have set.  ANTLR
+          tool errors appear in a console you can opened by clicking on a button
+          in the bottom tab.
+  <p>
+          You can use the ctrl-key while moving the mouse and it will show you
+          token information in the preview editor box via tooltips.
+
+  <p>
+          Errors within the preview editor are now highlighted with tooltips
+          and underlining just like a regular editor window. The difference
+          is that this window's grammar is specified in your grammar file.
+
+<p>See <a href="https://github.com/antlr/intellij-plugin-v4/blob/master/README.md">README.md</a>
+for more details.
+
+<p>
+For really big files and slow grammars, there is an appreciable delay when displaying the parse tree or profiling information.
+
+<p>
+<a href="https://github.com/antlr/intellij-plugin-v4">Github source</a>
+      ]]></description>
+
+	<change-notes><![CDATA[
+	Upgrade antlr to 4.7 (from 4.6), fix a few null-ptr exceptions see
+	 <a href="https://github.com/antlr/intellij-plugin-v4/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aclosed%20milestone%3A1.8.4">bug fixes</a>.
+	Requires at least Intellij 15.x now and Java 7 because ANTLR 4.7 needs Java 7!
+      ]]>
+	</change-notes>
+
+	<actions>
+		<action id="antlr.Generate" class="org.antlr.intellij.plugin.actions.GenerateParserAction"
+				text="Generate ANTLR Recognizer">
+			<keyboard-shortcut keymap="$default" first-keystroke="control shift G"/>
+			<add-to-group group-id="ToolsMenu" anchor="before" relative-to-action="com.intellij.tools.ExternalToolsGroup"/>
+			<add-to-group group-id="EditorPopupMenu" anchor="last"/>
+			<add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+		</action>
+		<action id="antlr.Configure" class="org.antlr.intellij.plugin.actions.ConfigureANTLRAction"
+				text="Configure ANTLR...">
+			<add-to-group group-id="ToolsMenu" anchor="before" relative-to-action="com.intellij.tools.ExternalToolsGroup"/>
+			<add-to-group group-id="EditorPopupMenu" anchor="last"/>
+			<add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+		</action>
+		<action id="antlr.TestRule" class="org.antlr.intellij.plugin.actions.TestRuleAction"
+				text="Test ANTLR Rule">
+			<add-to-group group-id="StructureViewPopupMenu" anchor="first"/>
+			<add-to-group group-id="EditorPopupMenu" anchor="last"/>
+		</action>
+		<action id="antlr.DefineLexerRulesForLiterals"
+				class="org.antlr.intellij.plugin.actions.GenerateLexerRulesForLiteralsAction"
+				text="Generate lexer rules for literals"
+				description="Inject lexer rules for undefined literals but leave literal in place">
+			<add-to-group group-id="GenerateGroup" anchor="first"/>
+		</action>
+		<action id="antlr.InlineRule" class="org.antlr.intellij.plugin.actions.InlineRuleAction"
+				text="Inline and remove rule">
+			<keyboard-shortcut keymap="$default" first-keystroke="control alt N"/>
+			<add-to-group group-id="RefactoringMenu" anchor="before" relative-to-action="Move"/>
+		</action>
+		<action id="antlr.ExtractRule"
+				class="org.antlr.intellij.plugin.actions.ExtractRuleAction"
+				text="Extract rule...">
+			<keyboard-shortcut keymap="$default" first-keystroke="control alt M"/>
+			<add-to-group group-id="RefactoringMenu" anchor="after" relative-to-action="antlr.InlineRule"/>
+		</action>
+		<action id="antlr.UniquifyRuleRefs"
+				class="org.antlr.intellij.plugin.actions.UniquifyRuleRefs"
+				text="Make refs to rule unique...">
+			<add-to-group group-id="RefactoringMenu" anchor="after" relative-to-action="antlr.ExtractRule"/>
+		</action>
+	</actions>
+
+	<extensions defaultExtensionNs="com.intellij">
+		<!--<codeInsight.lineMarkerProvider language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4LineMarkerProvider"/>-->
+		<fileTypeFactory implementation="org.antlr.intellij.plugin.ANTLRv4FileTypeFactory"/>
+		<lang.syntaxHighlighterFactory language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4SyntaxHighlighterFactory"/>
+		<lang.commenter language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4Commenter"/>
+		<colorSettingsPage implementation="org.antlr.intellij.plugin.configdialogs.ANTLRv4ColorsPage"/>
+		<additionalTextAttributes scheme="Default" file="colorSchemes/ANTLRv4Default.xml"/>
+		<additionalTextAttributes scheme="Darcula" file="colorSchemes/ANTLRv4Darcula.xml"/>
+		<lang.parserDefinition language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4ParserDefinition"/>
+		<lang.ast.leafFactory implementation="org.antlr.intellij.plugin.ANTLRv4ASTFactory"/>
+		<lang.psiStructureViewFactory language="ANTLRv4"
+									  implementationClass="org.antlr.intellij.plugin.structview.ANTLRv4StructureViewFactory"/>
+		<lang.foldingBuilder language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.folding.ANTLRv4FoldingBuilder"/>
+
+		<iconDescriptorUpdater implementation="consulo.antlr.ANTLR4IconDescriptorUpdater" />
+
+		<externalAnnotator language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4ExternalAnnotator"/>
+		<lang.findUsagesProvider language="ANTLRv4"
+								 implementationClass="org.antlr.intellij.plugin.ANTLRv4FindUsagesProvider"/>
+
+		<defaultLiveTemplatesProvider implementation="org.antlr.intellij.plugin.templates.ANTLRLiveTemplatesProvider"/>
+		<liveTemplateContext implementation="org.antlr.intellij.plugin.templates.ANTLRGenericContext"/>
+		<liveTemplateContext implementation="org.antlr.intellij.plugin.templates.OutsideRuleContext"/>
+
+		<projectService serviceImplementation="org.antlr.intellij.plugin.ANTLRv4PluginController" lazy="false"/>
+	</extensions>
+</idea-plugin>
