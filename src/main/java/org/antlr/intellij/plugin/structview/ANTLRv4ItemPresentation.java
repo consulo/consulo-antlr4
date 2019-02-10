@@ -15,6 +15,7 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import consulo.awt.TargetAWT;
+import consulo.ui.image.Image;
 
 public class ANTLRv4ItemPresentation implements ItemPresentation {
 	protected final PsiElement element;
@@ -43,13 +44,13 @@ public class ANTLRv4ItemPresentation implements ItemPresentation {
 	}
 
 	@Nullable
-	public Icon getIcon(boolean open) {
+	public Image getIcon() {
 		if ( element instanceof ParserRuleRefNode ) {
-			return TargetAWT.to(Icons.PARSER_RULE);
+			return Icons.PARSER_RULE;
 		}
 		if ( element instanceof ANTLRv4FileRoot ) {
-			return TargetAWT.to(Icons.FILE);
+			return Icons.FILE;
 		}
-		return TargetAWT.to(Icons.LEXER_RULE);
+		return Icons.LEXER_RULE;
 	}
 }
