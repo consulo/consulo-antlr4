@@ -42,6 +42,7 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileAdapter;
@@ -118,8 +119,6 @@ public class ANTLRv4PluginController implements Disposable
 		projectIsClosed = true;
 		uninstallListeners();
 
-		console.dispose();
-
 		for(PreviewState it : grammarToPreviewState.values())
 		{
 			previewPanel.inputPanel.releaseEditor(it);
@@ -149,6 +148,7 @@ public class ANTLRv4PluginController implements Disposable
 		TextConsoleBuilderFactory factory = TextConsoleBuilderFactory.getInstance();
 		TextConsoleBuilder consoleBuilder = factory.createBuilder(myProject);
 		this.console = consoleBuilder.getConsole();
+		Disposer.register(this, console);
 
 		JComponent consoleComponent = console.getComponent();
 		content = contentFactory.createContent(consoleComponent, "", false);
