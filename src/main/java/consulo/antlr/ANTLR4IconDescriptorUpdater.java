@@ -1,14 +1,14 @@
 package consulo.antlr;
 
-import javax.annotation.Nonnull;
-
+import com.intellij.psi.PsiElement;
+import consulo.annotation.access.RequiredReadAction;
+import consulo.ide.IconDescriptor;
+import consulo.ide.IconDescriptorUpdater;
 import org.antlr.intellij.plugin.Icons;
 import org.antlr.intellij.plugin.psi.LexerRuleRefNode;
 import org.antlr.intellij.plugin.psi.ParserRuleRefNode;
-import com.intellij.psi.PsiElement;
-import consulo.annotations.RequiredReadAction;
-import consulo.ide.IconDescriptor;
-import consulo.ide.IconDescriptorUpdater;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author VISTALL
