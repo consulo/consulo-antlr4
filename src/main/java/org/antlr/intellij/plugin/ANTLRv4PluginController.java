@@ -1,25 +1,5 @@
 package org.antlr.intellij.plugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.swing.JComponent;
-
-import org.antlr.intellij.adaptor.parser.SyntaxErrorListener;
-import org.antlr.intellij.plugin.parsing.ParsingResult;
-import org.antlr.intellij.plugin.parsing.ParsingUtils;
-import org.antlr.intellij.plugin.parsing.RunANTLROnGrammarFile;
-import org.antlr.intellij.plugin.preview.PreviewPanel;
-import org.antlr.intellij.plugin.preview.PreviewState;
-import org.antlr.intellij.plugin.profiler.ProfilerPanel;
-import org.antlr.v4.parse.ANTLRParser;
-import org.antlr.v4.tool.Grammar;
-import org.antlr.v4.tool.LexerGrammar;
-import org.jetbrains.annotations.NotNull;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderFactory;
 import com.intellij.execution.ui.ConsoleView;
@@ -33,17 +13,12 @@ import com.intellij.openapi.editor.event.EditorFactoryAdapter;
 import com.intellij.openapi.editor.event.EditorFactoryEvent;
 import com.intellij.openapi.editor.event.EditorMouseAdapter;
 import com.intellij.openapi.editor.event.EditorMouseEvent;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.fileEditor.FileEditorManagerAdapter;
-import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
-import com.intellij.openapi.fileEditor.FileEditorManagerListener;
+import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileAdapter;
 import com.intellij.openapi.vfs.VirtualFileEvent;
@@ -54,6 +29,26 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.util.messages.MessageBusConnection;
+import consulo.util.dataholder.Key;
+import org.antlr.intellij.adaptor.parser.SyntaxErrorListener;
+import org.antlr.intellij.plugin.parsing.ParsingResult;
+import org.antlr.intellij.plugin.parsing.ParsingUtils;
+import org.antlr.intellij.plugin.parsing.RunANTLROnGrammarFile;
+import org.antlr.intellij.plugin.preview.PreviewPanel;
+import org.antlr.intellij.plugin.preview.PreviewState;
+import org.antlr.intellij.plugin.profiler.ProfilerPanel;
+import org.antlr.v4.parse.ANTLRParser;
+import org.antlr.v4.tool.Grammar;
+import org.antlr.v4.tool.LexerGrammar;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This object is the controller for the ANTLR plug-in. It receives
