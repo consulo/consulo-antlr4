@@ -40,7 +40,7 @@ public class LiteralChooser extends DialogWrapper {
 	public Tree createTree(java.util.List<String> literals) {
 		final CheckedTreeNode rootNode = new CheckedTreeNode("all literals not defined");
 		for (String literal : literals) {
-			CheckedTreeNode child = new CheckedTreeNode(new LiteralChooserObject(literal, TargetAWT.to(Icons.LEXER_RULE)));
+			CheckedTreeNode child = new CheckedTreeNode(new LiteralChooserObject(literal, Icons.LEXER_RULE));
 			child.setChecked(true);
 			rootNode.add(child);
 		}
