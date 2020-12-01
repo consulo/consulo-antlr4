@@ -21,6 +21,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.LightweightHint;
 import consulo.awt.TargetAWT;
+import consulo.ui.color.ColorValue;
+import consulo.ui.style.StandardColors;
 import consulo.util.dataholder.Key;
 import org.antlr.intellij.adaptor.parser.SyntaxError;
 import org.antlr.intellij.plugin.ANTLRv4PluginController;
@@ -520,7 +522,7 @@ public class InputPanel {
 			String chNum = channel==Token.HIDDEN_CHANNEL ? "hidden" : String.valueOf(channel);
 			channelInfo = ", Channel "+chNum;
 		}
-		JBColor color = JBColor.BLUE;
+        StandardColors color = StandardColors.BLUE;
 		String tokenInfo =
 			String.format("#%d Type %s, Line %d:%d%s",
 			              tokenUnderCursor.getTokenIndex(),
@@ -531,7 +533,7 @@ public class InputPanel {
 			             );
 		if ( channel==-1 ) {
 			tokenInfo = "Skipped";
-			color = JBColor.gray;
+			color = StandardColors.GRAY;
 		}
 
 		Interval sourceInterval = Interval.of(tokenUnderCursor.getStartIndex(),
@@ -602,7 +604,7 @@ public class InputPanel {
 		}
 		String stackS = Utils.join(stack.toArray(), "\n");
 		highlightAndOfferHint(editor, offset, sourceInterval,
-		                      JBColor.BLUE, EffectType.ROUNDED_BOX, stackS);
+		                      StandardColors.BLUE, EffectType.ROUNDED_BOX, stackS);
 
 
 		// Code for a balloon.
@@ -622,7 +624,7 @@ public class InputPanel {
 
 	public void highlightAndOfferHint(Editor editor, int offset,
 	                                  Interval sourceInterval,
-	                                  JBColor color,
+	                                  ColorValue color,
 	                                  EffectType effectType, String hintText) {
 		CaretModel caretModel = editor.getCaretModel();
 		final TextAttributes attr = new TextAttributes();
@@ -815,8 +817,8 @@ public class InputPanel {
 			b = offendingToken.getStopIndex()+1;
 		}
 		final TextAttributes attr = new TextAttributes();
-		attr.setForegroundColor(JBColor.RED);
-		attr.setEffectColor(JBColor.RED);
+		attr.setForegroundColor(StandardColors.RED);
+		attr.setEffectColor(StandardColors.RED);
 		attr.setEffectType(EffectType.WAVE_UNDERSCORE);
 		RangeHighlighter highlighter =
 			markupModel.addRangeHighlighter(a,

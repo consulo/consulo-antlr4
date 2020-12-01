@@ -15,6 +15,11 @@ import com.intellij.ui.table.JBTable;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import consulo.awt.TargetAWT;
+import consulo.ui.color.ColorValue;
+import consulo.ui.color.RGBColor;
+import consulo.ui.ex.util.LightDarkColorValue;
+import consulo.ui.style.StandardColors;
 import consulo.util.dataholder.Key;
 import org.antlr.intellij.plugin.ANTLRv4PluginController;
 import org.antlr.intellij.plugin.preview.InputPanel;
@@ -39,10 +44,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 public class ProfilerPanel {
-	public static final Color AMBIGUITY_COLOR = new Color(138, 0, 0);
-	public static final Color FULLCTX_COLOR = new Color(255, 128, 0);
-	public static final Color PREDEVAL_COLOR = new Color(110, 139, 61);
-	public static final Color DEEPESTLOOK_COLOR = new Color(0, 128, 128);
+	public static final ColorValue AMBIGUITY_COLOR = new RGBColor(138, 0, 0);
+	public static final ColorValue FULLCTX_COLOR = new RGBColor(255, 128, 0);
+	public static final ColorValue PREDEVAL_COLOR = new RGBColor(110, 139, 61);
+	public static final ColorValue DEEPESTLOOK_COLOR = new RGBColor(0, 128, 128);
 
 	public static final Key<DecisionEventInfo> DECISION_EVENT_INFO_KEY = Key.create("DECISION_EVENT_INFO");
 	public static final Key<DecisionInfo> DECISION_INFO_KEY = Key.create("DECISION_INFO_KEY");
@@ -170,20 +175,20 @@ public class ProfilerPanel {
 		}
 		CommonToken startToken = (CommonToken) tokens.get(region.a);
 		CommonToken stopToken = (CommonToken) tokens.get(region.b);
-		JBColor effectColor = JBColor.darkGray;
+		ColorValue effectColor = TargetAWT.from(JBColor.darkGray);
 		DecisionInfo decisionInfo = previewState.parsingResult.parser.getParseInfo().getDecisionInfo()[decision];
 		if ( decisionInfo.predicateEvals.size()>0 ) {
-			effectColor = new JBColor(PREDEVAL_COLOR, AMBIGUITY_COLOR);
+			effectColor = new LightDarkColorValue(PREDEVAL_COLOR, AMBIGUITY_COLOR);
 		}
 		if ( decisionInfo.contextSensitivities.size()>0 ) {
-			effectColor = new JBColor(FULLCTX_COLOR, AMBIGUITY_COLOR);
+			effectColor = new LightDarkColorValue(FULLCTX_COLOR, AMBIGUITY_COLOR);
 		}
 		if ( decisionInfo.ambiguities.size()>0 ) {
-			effectColor = new JBColor(AMBIGUITY_COLOR, AMBIGUITY_COLOR);
+			effectColor = new LightDarkColorValue(AMBIGUITY_COLOR, AMBIGUITY_COLOR);
 		}
 
 		TextAttributes attr =
-			new TextAttributes(JBColor.BLACK, JBColor.WHITE, effectColor,
+			new TextAttributes(StandardColors.BLACK, StandardColors.WHITE, effectColor,
 			                   EffectType.ROUNDED_BOX, Font.PLAIN);
 		MarkupModel markupModel = grammarEditor.getMarkupModel();
 		final RangeHighlighter rangeHighlighter = markupModel.addRangeHighlighter(
@@ -258,13 +263,13 @@ public class ProfilerPanel {
 	}
 
 	public Token addDecisionEventHighlighter(PreviewState previewState, MarkupModel markupModel,
-	                                         DecisionEventInfo info, Color errorStripeColor,
+	                                         DecisionEventInfo info, ColorValue errorStripeColor,
 	                                         EffectType effectType) {
 		TokenStream tokens = previewState.parsingResult.parser.getInputStream();
 		Token startToken = tokens.get(info.startIndex);
 		Token stopToken = tokens.get(info.stopIndex);
 		TextAttributes textAttributes =
-			new TextAttributes(JBColor.BLACK, JBColor.WHITE, errorStripeColor,
+			new TextAttributes(StandardColors.BLACK, StandardColors.WHITE, errorStripeColor,
 			                   effectType, Font.PLAIN);
 		textAttributes.setErrorStripeColor(errorStripeColor);
 		final RangeHighlighter rangeHighlighter =
@@ -399,13 +404,13 @@ public class ProfilerPanel {
 			}
 			DecisionInfo decisionInfo = decisions[decision];
 			if ( decisionInfo.ambiguities.size()>0 ) {
-				setForeground(AMBIGUITY_COLOR);
+				setForeground(TargetAWT.to(AMBIGUITY_COLOR));
 			}
 			else if ( decisionInfo.contextSensitivities.size()>0 ) {
-				setForeground(FULLCTX_COLOR);
+				setForeground(TargetAWT.to(FULLCTX_COLOR));
 			}
 			else if ( decisionInfo.predicateEvals.size()>0 ) {
-				setForeground(PREDEVAL_COLOR);
+				setForeground(TargetAWT.to(PREDEVAL_COLOR));
 			}
 			return c;
 		}
@@ -473,13 +478,13 @@ public class ProfilerPanel {
 		                                       );
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ambiguityColorLabel = new JBLabel("Ambiguity");
-		ambiguityColorLabel.setForeground(AMBIGUITY_COLOR);
+		ambiguityColorLabel.setForeground(TargetAWT.to(AMBIGUITY_COLOR));
 		contextSensitivityColorLabel = new JBLabel("Context sensitivity");
-		contextSensitivityColorLabel.setForeground(FULLCTX_COLOR);
+		contextSensitivityColorLabel.setForeground(TargetAWT.to(FULLCTX_COLOR));
 		predEvaluationColorLabel = new JBLabel("Predicate evaluation");
-		predEvaluationColorLabel.setForeground(PREDEVAL_COLOR);
+		predEvaluationColorLabel.setForeground(TargetAWT.to(PREDEVAL_COLOR));
 		deepestLookaheadLabel = new JBLabel("Deepest lookahead");
-		deepestLookaheadLabel.setForeground(DEEPESTLOOK_COLOR);
+		deepestLookaheadLabel.setForeground(TargetAWT.to(DEEPESTLOOK_COLOR));
 	}
 
 }
