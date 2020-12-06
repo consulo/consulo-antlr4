@@ -112,7 +112,6 @@ public class ANTLRv4PluginController implements Disposable
 	{
 		//synchronized ( shutdownLock ) { // They should be called from EDT only so no lock
 		projectIsClosed = true;
-		uninstallListeners();
 
 		for(PreviewState it : grammarToPreviewState.values())
 		{
@@ -153,24 +152,13 @@ public class ANTLRv4PluginController implements Disposable
 		consoleWindow.setIcon(Icons.FILE);
 	}
 
-	// seems that intellij can kill and reload a project w/o user knowing.
-	// a ptr was left around that pointed at a disposed project. led to
-	// problem in switchGrammar. Probably was a listener still attached and trigger
-	// editor listeners released in editorReleased() events.
-	public void uninstallListeners()
-	{
-		VirtualFileManager.getInstance().removeVirtualFileListener(myVirtualFileAdapter);
-		MessageBusConnection msgBus = myProject.getMessageBus().connect(myProject);
-		msgBus.disconnect();
-	}
-
 	// ------------------------------
 
 	public void installListeners()
 	{
 		LOG.info("installListeners " + myProject.getName());
 		// Listen for .g4 file saves
-		VirtualFileManager.getInstance().addVirtualFileListener(myVirtualFileAdapter);
+		VirtualFileManager.getInstance().addVirtualFileListener(myVirtualFileAdapter, this);
 
 		// Listen for editor window changes
 		MessageBusConnection msgBus = myProject.getMessageBus().connect(myProject);
@@ -212,7 +200,7 @@ public class ANTLRv4PluginController implements Disposable
 							editor.putUserData(EDITOR_MOUSE_LISTENER_KEY, null);
 						}
 					}
-				}
+				}, this
 		);
 	}
 
