@@ -71,6 +71,9 @@ For really big files and slow grammars, there is an appreciable delay when displ
 	Requires at least Intellij 15.x now and Java 7 because ANTLR 4.7 needs Java 7!
       ]]>
 	</change-notes>
+	<tags>
+		<tag>grammar.language</tag>
+	</tags>
 
 	<actions>
 		<action id="antlr.Generate" class="org.antlr.intellij.plugin.actions.GenerateParserAction"
