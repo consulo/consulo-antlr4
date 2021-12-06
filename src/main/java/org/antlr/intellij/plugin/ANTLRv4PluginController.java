@@ -26,8 +26,6 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.ui.content.Content;
-import com.intellij.ui.content.ContentFactory;
 import com.intellij.util.messages.MessageBusConnection;
 import consulo.util.dataholder.Key;
 import org.antlr.intellij.adaptor.parser.SyntaxErrorListener;
@@ -79,7 +77,7 @@ public class ANTLRv4PluginController implements Disposable
 
 	public Map<String, PreviewState> grammarToPreviewState =
 			Collections.synchronizedMap(new HashMap<String, PreviewState>());
-	public ToolWindow previewWindow;    // same for all grammar editor
+
 	public PreviewPanel previewPanel;    // same for all grammar editor
 
 	public MyVirtualFileAdapter myVirtualFileAdapter = new MyVirtualFileAdapter();
@@ -92,7 +90,7 @@ public class ANTLRv4PluginController implements Disposable
 		{
 			return;
 		}
-		startupManager.registerPostStartupActivity(uiAccess -> projectOpened());
+		startupManager.registerPostStartupActivity(uiAccess -> installListeners());
 	}
 
 	@Nonnull
@@ -101,16 +99,9 @@ public class ANTLRv4PluginController implements Disposable
 		return project.getComponent(ANTLRv4PluginController.class);
 	}
 
-	private void projectOpened()
-	{
-		createToolWindows();
-		installListeners();
-	}
-
 	@Override
 	public void dispose()
 	{
-		//synchronized ( shutdownLock ) { // They should be called from EDT only so no lock
 		projectIsClosed = true;
 
 		for(PreviewState it : grammarToPreviewState.values())
@@ -119,37 +110,9 @@ public class ANTLRv4PluginController implements Disposable
 		}
 
 		previewPanel = null;
-		previewWindow = null;
 		consoleWindow = null;
 		myProject = null;
 		grammarToPreviewState = null;
-	}
-
-	public void createToolWindows()
-	{
-		LOG.info("createToolWindows " + myProject.getName());
-		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
-
-		previewPanel = new PreviewPanel(myProject);
-
-		ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-		Content content = contentFactory.createContent(previewPanel, "", false);
-
-		previewWindow = toolWindowManager.registerToolWindow(PREVIEW_WINDOW_ID, true, ToolWindowAnchor.BOTTOM);
-		previewWindow.getContentManager().addContent(content);
-		previewWindow.setIcon(Icons.FILE);
-
-		TextConsoleBuilderFactory factory = TextConsoleBuilderFactory.getInstance();
-		TextConsoleBuilder consoleBuilder = factory.createBuilder(myProject);
-		this.console = consoleBuilder.getConsole();
-		Disposer.register(this, console);
-
-		JComponent consoleComponent = console.getComponent();
-		content = contentFactory.createContent(consoleComponent, "", false);
-
-		consoleWindow = toolWindowManager.registerToolWindow(CONSOLE_WINDOW_ID, true, ToolWindowAnchor.BOTTOM);
-		consoleWindow.getContentManager().addContent(content);
-		consoleWindow.setIcon(Icons.FILE);
 	}
 
 	// ------------------------------
@@ -252,12 +215,12 @@ public class ANTLRv4PluginController implements Disposable
 		if(newFile.getName().endsWith(".g"))
 		{
 			LOG.info("currentEditorFileChangedEvent ANTLR 4 cannot handle .g files, only .g4");
-			previewWindow.hide(null);
+			getPreviewWindow().hide(null);
 			return;
 		}
 		if(!newFile.getName().endsWith(".g4"))
 		{
-			previewWindow.hide(null);
+			getPreviewWindow().hide(null);
 			return;
 		}
 		PreviewState previewState = getPreviewState(newFile);
@@ -290,7 +253,7 @@ public class ANTLRv4PluginController implements Disposable
 		LOG.info("editorFileClosedEvent " + grammarFileName + " " + myProject.getName());
 		if(!vfile.getName().endsWith(".g4"))
 		{
-			previewWindow.hide(null);
+			getPreviewWindow().hide(null);
 			return;
 		}
 
@@ -309,7 +272,7 @@ public class ANTLRv4PluginController implements Disposable
 		grammarToPreviewState.remove(grammarFileName);
 
 		// close tool window
-		previewWindow.hide(null);
+		getPreviewWindow().hide(null);
 	}
 
 	/**
@@ -422,36 +385,39 @@ public class ANTLRv4PluginController implements Disposable
 
 	public PreviewPanel getPreviewPanel()
 	{
+		if(previewPanel == null)
+		{
+			previewPanel = new PreviewPanel(myProject);
+		}
 		return previewPanel;
 	}
 
 	public ConsoleView getConsole()
 	{
+		if(console == null)
+		{
+			TextConsoleBuilderFactory factory = TextConsoleBuilderFactory.getInstance();
+			TextConsoleBuilder consoleBuilder = factory.createBuilder(myProject);
+			this.console = consoleBuilder.getConsole();
+			Disposer.register(this, console);
+		}
 		return console;
 	}
 
 	public ToolWindow getConsoleWindow()
 	{
-		return consoleWindow;
+		return ToolWindowManager.getInstance(myProject).getToolWindow(CONSOLE_WINDOW_ID);
 	}
 
 	public static void showConsoleWindow(final Project project)
 	{
-		ApplicationManager.getApplication().invokeLater(
-				new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						ANTLRv4PluginController.getInstance(project).getConsoleWindow().show(null);
-					}
-				}
+		ApplicationManager.getApplication().invokeLater(() -> ANTLRv4PluginController.getInstance(project).getConsoleWindow().show(null)
 		);
 	}
 
 	public ToolWindow getPreviewWindow()
 	{
-		return previewWindow;
+		return ToolWindowManager.getInstance(myProject).getToolWindow(PREVIEW_WINDOW_ID);
 	}
 
 	public

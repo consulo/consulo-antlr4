@@ -132,7 +132,7 @@ For really big files and slow grammars, there is an appreciable delay when displ
 									  implementationClass="org.antlr.intellij.plugin.structview.ANTLRv4StructureViewFactory"/>
 		<lang.foldingBuilder language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.folding.ANTLRv4FoldingBuilder"/>
 
-		<iconDescriptorUpdater implementation="consulo.antlr.ANTLR4IconDescriptorUpdater" />
+		<iconDescriptorUpdater implementation="consulo.antlr.ANTLR4IconDescriptorUpdater"/>
 
 		<externalAnnotator language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4ExternalAnnotator"/>
 		<lang.findUsagesProvider language="ANTLRv4"
@@ -143,5 +143,11 @@ For really big files and slow grammars, there is an appreciable delay when displ
 		<liveTemplateContext implementation="org.antlr.intellij.plugin.templates.OutsideRuleContext"/>
 
 		<projectService serviceImplementation="org.antlr.intellij.plugin.ANTLRv4PluginController" lazy="false"/>
+
+		<toolWindow factoryClass="consulo.antlr.toolWindow.ANTLR4PreviewToolWindowFactory" id="ANTLR Preview" dispayName="ANTLR Preview"
+					icon="consulo.antlr4.Antlr4IconGroup@toolwindowantlr" anchor="bottom"/>
+
+		<toolWindow factoryClass="consulo.antlr.toolWindow.ANTLR4ConsoleToolWindowFactory" id="Tool Output" dispayName="Tool Output"
+					icon="consulo.antlr4.Antlr4IconGroup@toolwindowantlr" anchor="bottom"/>
 	</extensions>
 </consulo-plugin>
