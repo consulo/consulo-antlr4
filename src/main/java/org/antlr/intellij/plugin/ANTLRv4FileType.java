@@ -1,5 +1,6 @@
 package org.antlr.intellij.plugin;
 
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.intellij.openapi.fileTypes.LanguageFileType;
@@ -14,14 +15,14 @@ public class ANTLRv4FileType extends LanguageFileType {
 
 	@NotNull
 	@Override
-	public String getName() {
+	public String getId() {
 		return "ANTLR v4 grammar file";
 	}
 
 	@NotNull
 	@Override
-	public String getDescription() {
-		return "ANTLR v4 grammar file";
+	public LocalizeValue getDescription() {
+		return LocalizeValue.localizeTODO("ANTLR v4 grammar file");
 	}
 
 	@NotNull
