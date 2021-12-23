@@ -1,4 +1,4 @@
-<consulo-plugin>
+<consulo-plugin url="https://github.com/consulo/consulo-antlr4">
 	<id>org.antlr.intellij.plugin</id>
 	<name>ANTLR v4 grammar plugin</name>
 	<version>SNAPSHOT</version>
