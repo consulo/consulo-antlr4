@@ -1,9 +1,9 @@
 package org.antlr.intellij.plugin.psi;
 
+import consulo.language.psi.PsiReference;
 import org.antlr.intellij.plugin.ANTLRv4TokenTypes;
 import org.antlr.intellij.plugin.parser.ANTLRv4Lexer;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.ast.IElementType;
 
 public class ParserRuleRefNode extends GrammarElementRefNode {
 	public ParserRuleRefNode(IElementType type, CharSequence text) {

@@ -1,29 +1,31 @@
 package org.antlr.intellij.plugin.preview;
 
-import com.intellij.codeInsight.hint.HintManager;
-import com.intellij.codeInsight.hint.HintManagerImpl;
-import com.intellij.codeInsight.hint.HintUtil;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.*;
-import com.intellij.openapi.editor.event.DocumentAdapter;
-import com.intellij.openapi.editor.event.DocumentEvent;
-import com.intellij.openapi.editor.event.EditorMouseEvent;
-import com.intellij.openapi.editor.ex.EditorMarkupModel;
-import com.intellij.openapi.editor.markup.*;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.ComponentWithBrowseButton;
-import com.intellij.openapi.ui.TextComponentAccessor;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.JBColor;
-import com.intellij.ui.LightweightHint;
-import consulo.awt.TargetAWT;
+import consulo.codeEditor.*;
+import consulo.codeEditor.event.EditorMouseEvent;
+import consulo.codeEditor.markup.HighlighterLayer;
+import consulo.codeEditor.markup.HighlighterTargetArea;
+import consulo.codeEditor.markup.MarkupModel;
+import consulo.codeEditor.markup.RangeHighlighter;
+import consulo.colorScheme.EffectType;
+import consulo.colorScheme.TextAttributes;
+import consulo.document.Document;
+import consulo.document.event.DocumentAdapter;
+import consulo.document.event.DocumentEvent;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.language.editor.hint.HintManager;
+import consulo.logging.Logger;
+import consulo.project.Project;
 import consulo.ui.color.ColorValue;
+import consulo.ui.ex.JBColor;
+import consulo.ui.ex.awt.ComponentWithBrowseButton;
+import consulo.ui.ex.awt.TextComponentAccessor;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.ui.ex.awtUnsafe.TargetAWT;
 import consulo.ui.style.StandardColors;
 import consulo.util.dataholder.Key;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import org.antlr.intellij.adaptor.parser.SyntaxError;
 import org.antlr.intellij.plugin.ANTLRv4PluginController;
 import org.antlr.intellij.plugin.Icons;
@@ -47,8 +49,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -222,16 +225,10 @@ public class InputPanel {
 		}
 
 		String inputFileName = fileChooser.getText();
-		char[] inputText = new char[0];
+		String inputText = "";
 		if ( inputFileName.trim().length()>0 ) {
 			try {
-				inputText = FileUtil.loadFileText(new File(inputFileName));
-				String s = new String(inputText);
-				s = s.replaceAll("\r", "");
-				// "All text strings passed to document modification methods
-				// (setText, insertString, replaceString) must use only \n as
-				// line separators."
-				inputText = s.toCharArray();
+				inputText = StringUtil.convertLineSeparators(Files.readString(Path.of(inputFileName)));
 			} catch (IOException ioe) {
 				LOG.error("can't load input file "+inputFileName, ioe);
 			}
@@ -272,7 +269,7 @@ public class InputPanel {
 		                       );
 		final Editor editor = factory.createEditor(doc, previewPanel.project);
 		// force right margin
-		((EditorMarkupModel) editor.getMarkupModel()).setErrorStripeVisible(true);
+		// TODO ((EditorMarkupModel) editor.getMarkupModel()).setErrorStripeVisible(true);
 		EditorSettings settings = editor.getSettings();
 		settings.setWhitespacesShown(true);
 		settings.setLineNumbersShown(true);
@@ -547,7 +544,7 @@ public class InputPanel {
 	 * if the alt-key is down and mouse movement occurs.
 	 */
 	public void showParseRegion(EditorMouseEvent event, Editor editor,
-	                            PreviewState previewState, int offset) {
+								PreviewState previewState, int offset) {
 		Token tokenUnderCursor = ParsingUtils.getTokenUnderCursor(previewState, offset);
 		if ( tokenUnderCursor==null ) {
 			return;
@@ -623,9 +620,9 @@ public class InputPanel {
 	}
 
 	public void highlightAndOfferHint(Editor editor, int offset,
-	                                  Interval sourceInterval,
-	                                  ColorValue color,
-	                                  EffectType effectType, String hintText) {
+									  Interval sourceInterval,
+									  ColorValue color,
+									  EffectType effectType, String hintText) {
 		CaretModel caretModel = editor.getCaretModel();
 		final TextAttributes attr = new TextAttributes();
 		attr.setForegroundColor(color);
@@ -712,7 +709,7 @@ public class InputPanel {
 	 * Display syntax errors, hints in tooltips if under the cursor
 	 */
 	public static void showTooltips(EditorMouseEvent event, Editor editor,
-	                                @NotNull PreviewState previewState, int offset) {
+									@NotNull PreviewState previewState, int offset) {
 		if ( previewState.parsingResult==null ) return; // no results?
 
 		// Turn off any tooltips if none under the cursor
@@ -767,7 +764,7 @@ public class InputPanel {
 			msgList.add(msg);
 		}
 		String combinedMsg = Utils.join(msgList.iterator(), "\n");
-		HintManagerImpl hintMgr = (HintManagerImpl) HintManager.getInstance();
+		HintManager hintMgr = HintManager.getInstance();
 		if ( foundDecisionEvent ) {
 			showDecisionEventToolTip(editor, offset, hintMgr, combinedMsg.toString());
 		}
@@ -776,28 +773,12 @@ public class InputPanel {
 		}
 	}
 
-	public static void showPreviewEditorErrorToolTip(Editor editor, int offset, HintManagerImpl hintMgr, String msg) {
-		int flags =
-			HintManager.HIDE_BY_ANY_KEY|
-				HintManager.HIDE_BY_TEXT_CHANGE|
-				HintManager.HIDE_BY_SCROLLING;
-		int timeout = 0; // default?
-		hintMgr.showErrorHint(editor, msg,
-		                      offset, offset+1,
-		                      HintManager.ABOVE, flags, timeout);
+	public static void showPreviewEditorErrorToolTip(Editor editor, int offset, HintManager hintMgr, String msg) {
+		hintMgr.showErrorHint(editor, msg);
 	}
 
-	public static void showDecisionEventToolTip(Editor editor, int offset, HintManagerImpl hintMgr, String msg) {
-		int flags =
-			HintManager.HIDE_BY_ANY_KEY|
-				HintManager.HIDE_BY_TEXT_CHANGE|
-				HintManager.HIDE_BY_SCROLLING;
-		int timeout = 0; // default?
-		JComponent infoLabel = HintUtil.createInformationLabel(msg);
-		LightweightHint hint = new LightweightHint(infoLabel);
-		final LogicalPosition pos = editor.offsetToLogicalPosition(offset);
-		final Point p = HintManagerImpl.getHintPosition(hint, editor, pos, HintManager.ABOVE);
-		hintMgr.showEditorHint(hint, editor, p, flags, timeout, false);
+	public static void showDecisionEventToolTip(Editor editor, int offset, HintManager hintMgr, String msg) {
+		hintMgr.showInformationHint(editor, msg);
 	}
 
 	public void annotateErrorsInPreviewInputEditor(SyntaxError e) {

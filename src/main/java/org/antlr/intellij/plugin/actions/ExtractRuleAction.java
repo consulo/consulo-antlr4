@@ -1,19 +1,19 @@
 package org.antlr.intellij.plugin.actions;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.application.Result;
-import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.SelectionModel;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import consulo.document.Document;
+import consulo.language.editor.LangDataKeys;
+import consulo.language.editor.WriteCommandAction;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.language.editor.PlatformDataKeys;
+import consulo.ui.ex.action.Presentation;
+import consulo.application.Result;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.SelectionModel;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.virtualFileSystem.VirtualFile;
 import org.antlr.intellij.plugin.parser.ANTLRv4Lexer;
 import org.antlr.intellij.plugin.parsing.ParsingResult;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;
@@ -25,7 +25,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 
-public class ExtractRuleAction extends AnAction {
+public class ExtractRuleAction extends AnAction
+{
 	/** Only show if user has selected region and is in a lexer or parser rule */
 	@Override
 	public void update(AnActionEvent e) {
@@ -94,7 +95,7 @@ public class ExtractRuleAction extends AnAction {
 		}
 
 		selectionModel.setSelection(start.getStartIndex(), stop.getStopIndex() + 1);
-		final Project project = e.getProject();
+		final Project project = e.getData(Project.KEY);
 		final ChooseExtractedRuleName nameChooser = new ChooseExtractedRuleName(project);
 		nameChooser.show();
 		if ( nameChooser.ruleName==null ) return;

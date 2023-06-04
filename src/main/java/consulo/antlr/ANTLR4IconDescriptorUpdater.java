@@ -1,19 +1,21 @@
 package consulo.antlr;
 
-import com.intellij.psi.PsiElement;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.icon.IconDescriptorUpdater;
+import consulo.language.psi.PsiElement;
 import consulo.annotation.access.RequiredReadAction;
-import consulo.ide.IconDescriptor;
-import consulo.ide.IconDescriptorUpdater;
+import consulo.language.icon.IconDescriptor;
 import org.antlr.intellij.plugin.Icons;
 import org.antlr.intellij.plugin.psi.LexerRuleRefNode;
 import org.antlr.intellij.plugin.psi.ParserRuleRefNode;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * @author VISTALL
  * @since 2018-09-12
  */
+@ExtensionImpl
 public class ANTLR4IconDescriptorUpdater implements IconDescriptorUpdater
 {
 	@RequiredReadAction

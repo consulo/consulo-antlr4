@@ -1,6 +1,6 @@
 package org.antlr.intellij.plugin.generators;
 
-import com.intellij.ui.CheckboxTreeBase;
+import consulo.ui.ex.awt.tree.CheckboxTreeBase;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;

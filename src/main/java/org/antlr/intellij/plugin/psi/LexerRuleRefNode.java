@@ -2,8 +2,8 @@ package org.antlr.intellij.plugin.psi;
 
 import org.antlr.intellij.plugin.ANTLRv4TokenTypes;
 import org.antlr.intellij.plugin.parser.ANTLRv4Lexer;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.psi.PsiReference;
+import consulo.language.ast.IElementType;
 
 public class LexerRuleRefNode extends GrammarElementRefNode {
 	public LexerRuleRefNode(IElementType type, CharSequence text) {

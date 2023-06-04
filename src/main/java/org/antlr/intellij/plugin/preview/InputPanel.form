@@ -41,7 +41,7 @@
                   <text value="File"/>
                 </properties>
               </component>
-              <component id="825e9" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="fileChooser">
+              <component id="825e9" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="fileChooser">
                 <constraints/>
                 <properties/>
               </component>

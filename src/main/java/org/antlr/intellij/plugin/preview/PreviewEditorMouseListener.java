@@ -1,12 +1,13 @@
 package org.antlr.intellij.plugin.preview;
 
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.event.EditorMouseEvent;
-import com.intellij.openapi.editor.event.EditorMouseEventArea;
-import com.intellij.openapi.editor.event.EditorMouseListener;
-import com.intellij.openapi.editor.event.EditorMouseMotionListener;
-import com.intellij.openapi.editor.markup.RangeHighlighter;
-import com.intellij.openapi.ui.popup.JBPopup;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.EditorPopupHelper;
+import consulo.codeEditor.event.EditorMouseEvent;
+import consulo.codeEditor.event.EditorMouseEventArea;
+import consulo.codeEditor.markup.RangeHighlighter;
+import consulo.ui.ex.popup.JBPopup;
+import consulo.codeEditor.event.EditorMouseListener;
+import consulo.codeEditor.event.EditorMouseMotionListener;
 import org.antlr.intellij.plugin.actions.MyActionUtils;
 import org.antlr.v4.runtime.atn.AmbiguityInfo;
 import org.antlr.v4.runtime.atn.LookaheadEventInfo;
@@ -14,7 +15,8 @@ import org.antlr.v4.runtime.atn.LookaheadEventInfo;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-class PreviewEditorMouseListener implements EditorMouseListener, EditorMouseMotionListener {
+class PreviewEditorMouseListener implements EditorMouseListener, EditorMouseMotionListener
+{
 	private InputPanel inputPanel;
 
 	public PreviewEditorMouseListener(InputPanel inputPanel) {
@@ -73,11 +75,11 @@ class PreviewEditorMouseListener implements EditorMouseListener, EditorMouseMoti
 																				  LookaheadEventInfo.class);
 		if ( ambigInfo!=null ) {
 			JBPopup popup = ShowAmbigTreesDialog.createAmbigTreesPopup(previewState, ambigInfo);
-			popup.showInBestPositionFor(editor);
+			EditorPopupHelper.getInstance().showPopupInBestPositionFor(editor, popup);
 		}
 		else if ( lookaheadInfo != null ) {
 			JBPopup popup = ShowAmbigTreesDialog.createLookaheadTreesPopup(previewState, lookaheadInfo);
-			popup.showInBestPositionFor(editor);
+			EditorPopupHelper.getInstance().showPopupInBestPositionFor(editor, popup);
 		}
 	}
 

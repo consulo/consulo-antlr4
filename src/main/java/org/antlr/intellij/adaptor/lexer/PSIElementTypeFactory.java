@@ -1,8 +1,8 @@
 package org.antlr.intellij.adaptor.lexer;
 
-import com.intellij.lang.Language;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
+import consulo.language.Language;
+import consulo.language.ast.TokenSet;
+import consulo.language.ast.IElementType;
 import org.antlr.v4.runtime.Token;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,7 +70,7 @@ public class PSIElementTypeFactory {
 	}
 
 	public static List<RuleIElementType> getRuleIElementTypes(Language language,
-	                                                         List<String> ruleNames)
+															  List<String> ruleNames)
 	{
 		List<RuleIElementType> result = ruleIElementTypesCache.get(language);
 		if (result == null) {
@@ -94,8 +94,8 @@ public class PSIElementTypeFactory {
 	}
 
 	public static TokenSet createTokenSet(Language language,
-	                                      List<String> tokenNames,
-	                                      int... types)
+										  List<String> tokenNames,
+										  int... types)
 	{
 		List<TokenIElementType> tokenIElementTypes =
 			getTokenIElementTypes(language, tokenNames);

@@ -1,5 +1,7 @@
 package org.antlr.intellij.adaptor.parser;
 
+import consulo.language.ast.ASTNode;
+import consulo.language.version.LanguageVersion;
 import org.antlr.intellij.adaptor.lexer.PsiTokenSource;
 import org.antlr.intellij.plugin.parsing.TokenStreamSubset;
 import org.antlr.v4.runtime.Parser;
@@ -8,12 +10,10 @@ import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.jetbrains.annotations.NotNull;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiParser;
-import com.intellij.psi.tree.IElementType;
-import consulo.lang.LanguageVersion;
+import consulo.language.Language;
+import consulo.language.parser.PsiBuilder;
+import consulo.language.parser.PsiParser;
+import consulo.language.ast.IElementType;
 
 /**
  * An adaptor that makes an ANTLR parser look like a PsiParser

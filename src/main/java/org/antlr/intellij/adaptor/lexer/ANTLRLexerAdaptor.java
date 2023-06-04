@@ -1,7 +1,8 @@
 package org.antlr.intellij.adaptor.lexer;
 
-import com.intellij.lang.Language;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.Language;
+import consulo.language.ast.IElementType;
+import consulo.language.lexer.LexerBase;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.IntStream;
 import org.antlr.v4.runtime.Lexer;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 /**
  * This is the adaptor class for implementations of {@link
- * com.intellij.lexer.Lexer} backed by an ANTLR 4 lexer. It supports
+ * consulo.language.lexer.Lexer} backed by an ANTLR 4 lexer. It supports
  * any ANTLR 4 lexer that does not store extra information for use in
  * custom actions. For lexers that do not store custom state information, this
  * default implementation is sufficient. Otherwise, subclass and override:
@@ -40,7 +41,8 @@ import java.util.Map;
  *
  * @author Sam Harwell
  */
-public class ANTLRLexerAdaptor extends com.intellij.lexer.LexerBase {
+public class ANTLRLexerAdaptor extends LexerBase
+{
 	/**
 	 * Gets the {@link Language} supported by this lexer. This
 	 * value is passed to {@link PSIElementTypeFactory} to ensure the

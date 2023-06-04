@@ -1,26 +1,20 @@
 package org.antlr.intellij.plugin.preview;
 
-import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.openapi.ui.popup.PopupChooserBuilder;
-import com.intellij.ui.JBColor;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.JBList;
-import com.intellij.ui.components.JBPanel;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.intellij.util.containers.Predicate;
+import consulo.ui.ex.JBColor;
+import consulo.ui.ex.awt.JBLabel;
+import consulo.ui.ex.awt.JBList;
+import consulo.ui.ex.awt.JBPanel;
+import consulo.ui.ex.popup.IPopupChooserBuilder;
+import consulo.ui.ex.popup.JBPopup;
+import consulo.ui.ex.popup.JBPopupFactory;
 import org.antlr.intellij.plugin.Utils;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;
 import org.antlr.intellij.plugin.parsing.PreviewInterpreterRuleContext;
 import org.antlr.v4.gui.TreeViewer;
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.ParserInterpreter;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.RuleContext;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.AmbiguityInfo;
 import org.antlr.v4.runtime.atn.LookaheadEventInfo;
 import org.antlr.v4.runtime.misc.Interval;
@@ -37,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class ShowAmbigTreesDialog extends JDialog {
 	public static final int MAX_PHRASE_WIDTH = 25;
@@ -73,18 +68,9 @@ public class ShowAmbigTreesDialog extends JDialog {
 
 	public static JBPopup createAmbigTreesPopup(final PreviewState previewState,
 	                                            final AmbiguityInfo ambigInfo) {
-		final JBList list = new JBList("Show all phrase interpretations");
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JBPopupFactory factory = JBPopupFactory.getInstance();
-		PopupChooserBuilder builder = factory.createListPopupBuilder(list);
-		builder.setItemChoosenCallback(
-			new Runnable() {
-				@Override
-				public void run() {
-					popupAmbigTreesDialog(previewState, ambigInfo);
-				}
-			}
-		                              );
+		IPopupChooserBuilder<String> builder = factory.createPopupChooserBuilder(List.of("Show all phrase interpretations"));
+		builder.setItemChosenCallback(s -> popupAmbigTreesDialog(previewState, ambigInfo));
 		JBPopup popup = builder.createPopup();
 		return popup;
 	}
@@ -133,18 +119,11 @@ public class ShowAmbigTreesDialog extends JDialog {
 
 	public static JBPopup createLookaheadTreesPopup(final PreviewState previewState,
 	                                                final LookaheadEventInfo lookaheadInfo) {
-		final JBList list = new JBList("Show all lookahead interpretations");
+		final JBList list = new JBList();
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JBPopupFactory factory = JBPopupFactory.getInstance();
-		PopupChooserBuilder builder = factory.createListPopupBuilder(list);
-		builder.setItemChoosenCallback(
-			new Runnable() {
-				@Override
-				public void run() {
-					popupLookaheadTreesDialog(previewState, lookaheadInfo);
-				}
-			}
-		                              );
+		IPopupChooserBuilder<String> builder = factory.createPopupChooserBuilder(List.of("Show all lookahead interpretations"));
+		builder.setItemChosenCallback(s -> popupLookaheadTreesDialog(previewState, lookaheadInfo));
 
 		JBPopup popup = builder.createPopup();
 		return popup;
@@ -277,17 +256,11 @@ public class ShowAmbigTreesDialog extends JDialog {
 		tleaves = Utils.filter(tleaves,
 		                       new Predicate<Tree>() {
 			                       @Override
-			                       public boolean apply(Tree t) {
+			                       public boolean test(Tree t) {
 				                       return ((Token) t.getPayload()).getTokenIndex()>=first;
 			                       }
 		                       });
-		uleaves = Utils.filter(uleaves,
-		                       new Predicate<Tree>() {
-			                       @Override
-			                       public boolean apply(Tree t) {
-				                       return ((Token) t.getPayload()).getTokenIndex()>=first;
-			                       }
-		                       });
+		uleaves = Utils.filter(uleaves, t1 -> ((Token) t1.getPayload()).getTokenIndex()>=first);
 		int n = Math.min(tleaves.size(), uleaves.size());
 		for (int i = 0; i<n; i++) { // for each leaf in t and u
 			Tree tleaf = tleaves.get(i);

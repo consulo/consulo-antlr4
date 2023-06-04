@@ -1,10 +1,12 @@
 package org.antlr.intellij.plugin.templates;
 
-import com.intellij.codeInsight.template.EverywhereContextType;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.editor.template.context.EverywhereContextType;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public class ANTLRGenericContext extends ANTLRLiveTemplateContext {
 	public ANTLRGenericContext() {
 		super("ANTLR", "ANTLR", EverywhereContextType.class);

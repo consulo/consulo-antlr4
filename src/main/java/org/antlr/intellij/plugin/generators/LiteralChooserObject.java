@@ -1,7 +1,7 @@
 package org.antlr.intellij.plugin.generators;
 
-import com.intellij.ui.SimpleColoredComponent;
-import com.intellij.ui.SimpleTextAttributes;
+import consulo.ui.ex.SimpleTextAttributes;
+import consulo.ui.ex.awt.SimpleColoredComponent;
 import consulo.ui.image.Image;
 import org.jetbrains.annotations.Nullable;
 

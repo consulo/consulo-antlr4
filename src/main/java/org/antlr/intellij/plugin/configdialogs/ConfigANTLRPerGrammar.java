@@ -1,15 +1,16 @@
 package org.antlr.intellij.plugin.configdialogs;
 
-import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import consulo.component.PropertiesComponent;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.module.content.ProjectRootManager;
+import consulo.project.Project;
+import consulo.project.ProjectPropertiesComponent;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.virtualFileSystem.VirtualFile;
 import org.antlr.intellij.plugin.parsing.RunANTLROnGrammarFile;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,14 +70,14 @@ public class ConfigANTLRPerGrammar extends DialogWrapper {
 	}
 
 	public static String getProp(Project project, String qualFileName, String name, String defaultValue) {
-		PropertiesComponent props = PropertiesComponent.getInstance(project);
+		PropertiesComponent props = ProjectPropertiesComponent.getInstance(project);
 		String v = props.getValue(getPropNameForFile(qualFileName, name));
 		if ( v==null || v.trim().length()==0 ) return defaultValue;
 		return v;
 	}
 
 	public static boolean getBooleanProp(Project project, String qualFileName, String name, boolean defaultValue) {
-		PropertiesComponent props = PropertiesComponent.getInstance(project);
+		PropertiesComponent props = ProjectPropertiesComponent.getInstance(project);
 		return props.getBoolean(getPropNameForFile(qualFileName, name), defaultValue);
 	}
 
@@ -93,7 +94,7 @@ public class ConfigANTLRPerGrammar extends DialogWrapper {
 	}
 
 	public void loadValues(Project project, String qualFileName) {
-		PropertiesComponent props = PropertiesComponent.getInstance(project);
+		PropertiesComponent props = ProjectPropertiesComponent.getInstance(project);
 		String s;
 		boolean b;
 		b = props.getBoolean(getPropNameForFile(qualFileName, PROP_AUTO_GEN), false);
@@ -118,7 +119,7 @@ public class ConfigANTLRPerGrammar extends DialogWrapper {
 
 	public void saveValues(Project project, String qualFileName) {
 		String v;
-		PropertiesComponent props = PropertiesComponent.getInstance(project);
+		PropertiesComponent props = ProjectPropertiesComponent.getInstance(project);
 
 		props.setValue(getPropNameForFile(qualFileName, PROP_AUTO_GEN),
 		               String.valueOf(autoGenerateParsersCheckBox.isSelected()));

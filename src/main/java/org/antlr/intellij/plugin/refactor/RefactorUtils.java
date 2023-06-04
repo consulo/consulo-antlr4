@@ -1,9 +1,9 @@
 package org.antlr.intellij.plugin.refactor;
 
-import com.intellij.openapi.application.Result;
-import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.project.Project;
+import consulo.application.Result;
+import consulo.language.editor.WriteCommandAction;
+import consulo.document.Document;
+import consulo.project.Project;
 import org.antlr.intellij.plugin.parser.ANTLRv4Parser;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Parser;

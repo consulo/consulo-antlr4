@@ -1,9 +1,11 @@
 package org.antlr.intellij.plugin;
 
-import com.intellij.openapi.fileTypes.FileTypeConsumer;
-import com.intellij.openapi.fileTypes.FileTypeFactory;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.virtualFileSystem.fileType.FileTypeFactory;
+import consulo.virtualFileSystem.fileType.FileTypeConsumer;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public class ANTLRv4FileTypeFactory extends FileTypeFactory{
     @Override
     public void createFileTypes(@NotNull FileTypeConsumer fileTypeConsumer) {

@@ -1,7 +1,7 @@
 package org.antlr.intellij.adaptor.parser;
 
-import com.intellij.lang.Language;
-import com.intellij.lang.PsiBuilder;
+import consulo.language.parser.PsiBuilder;
+import consulo.language.Language;
 import org.antlr.intellij.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.intellij.adaptor.lexer.RuleIElementType;
 import org.antlr.intellij.adaptor.lexer.TokenIElementType;

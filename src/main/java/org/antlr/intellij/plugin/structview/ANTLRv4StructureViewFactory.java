@@ -1,26 +1,32 @@
 package org.antlr.intellij.plugin.structview;
 
-import com.intellij.ide.structureView.StructureViewBuilder;
-import com.intellij.ide.structureView.StructureViewModel;
-import com.intellij.ide.structureView.StructureViewModelBase;
-import com.intellij.ide.structureView.StructureViewTreeElement;
-import com.intellij.ide.structureView.TreeBasedStructureViewBuilder;
-import com.intellij.ide.structureView.impl.common.PsiTreeElementBase;
-import com.intellij.lang.PsiStructureViewFactory;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.fileEditor.structureView.StructureViewBuilder;
+import consulo.fileEditor.structureView.TreeBasedStructureViewBuilder;
+import consulo.language.Language;
+import consulo.language.editor.structureView.PsiTreeElementBase;
+import consulo.language.editor.structureView.StructureViewModelBase;
+import consulo.fileEditor.structureView.StructureViewTreeElement;
+import consulo.language.editor.structureView.PsiStructureViewFactory;
+import consulo.codeEditor.Editor;
+import consulo.fileEditor.structureView.StructureViewModel;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.virtualFileSystem.VirtualFile;
+import jakarta.annotation.Nonnull;
 import org.antlr.intellij.plugin.ANTLRv4FileRoot;
+import org.antlr.intellij.plugin.ANTLRv4Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
 
+@ExtensionImpl
 public class ANTLRv4StructureViewFactory implements PsiStructureViewFactory {
 	/** fake a blank Treeview with a warning */
-	public static class DummyViewTreeElement extends PsiTreeElementBase<PsiElement> {
+	public static class DummyViewTreeElement extends PsiTreeElementBase<PsiElement>
+	{
 		public DummyViewTreeElement(PsiElement psiElement) {
 			super(psiElement);
 		}
@@ -53,4 +59,11 @@ public class ANTLRv4StructureViewFactory implements PsiStructureViewFactory {
 			}
         };
     }
+
+	@Nonnull
+	@Override
+	public Language getLanguage()
+	{
+		return ANTLRv4Language.INSTANCE;
+	}
 }

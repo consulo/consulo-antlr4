@@ -1,12 +1,15 @@
 package org.antlr.intellij.plugin;
 
-import com.intellij.lang.annotation.AnnotationHolder;
-import com.intellij.lang.annotation.ExternalAnnotator;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.ApplicationManager;
+import consulo.language.Language;
+import consulo.language.editor.annotation.AnnotationHolder;
+import consulo.language.psi.PsiFile;
+import consulo.logging.Logger;
+import consulo.document.util.TextRange;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.editor.annotation.ExternalAnnotator;
+import jakarta.annotation.Nonnull;
 import org.antlr.intellij.plugin.parsing.RunANTLROnGrammarFile;
 import org.antlr.intellij.plugin.psi.MyPsiUtils;
 import org.antlr.runtime.ANTLRReaderStream;
@@ -41,7 +44,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ANTLRv4ExternalAnnotator extends ExternalAnnotator<PsiFile, List<ANTLRv4ExternalAnnotator.Issue>> {
+@ExtensionImpl
+public class ANTLRv4ExternalAnnotator extends ExternalAnnotator<PsiFile, List<ANTLRv4ExternalAnnotator.Issue>>
+{
     // NOTE: can't use instance var as only 1 instance
 
     public static final Logger LOG = Logger.getInstance("ANTLRv4ExternalAnnotator");
@@ -266,5 +271,12 @@ public class ANTLRv4ExternalAnnotator extends ExternalAnnotator<PsiFile, List<AN
 		}
 		ruleDefs.keySet().removeAll(ruleRefs);
 		return ruleDefs;
+	}
+
+	@Nonnull
+	@Override
+	public Language getLanguage()
+	{
+		return ANTLRv4Language.INSTANCE;
 	}
 }

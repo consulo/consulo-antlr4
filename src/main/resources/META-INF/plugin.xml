@@ -65,12 +65,6 @@ For really big files and slow grammars, there is an appreciable delay when displ
 <a href="https://github.com/antlr/intellij-plugin-v4">Github source</a>
       ]]></description>
 
-	<change-notes><![CDATA[
-	Upgrade antlr to 4.7 (from 4.6), fix a few null-ptr exceptions see
-	 <a href="https://github.com/antlr/intellij-plugin-v4/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aclosed%20milestone%3A1.8.4">bug fixes</a>.
-	Requires at least Intellij 15.x now and Java 7 because ANTLR 4.7 needs Java 7!
-      ]]>
-	</change-notes>
 	<tags>
 		<tag>grammar.language</tag>
 	</tags>
@@ -119,35 +113,8 @@ For really big files and slow grammars, there is an appreciable delay when displ
 	</actions>
 
 	<extensions defaultExtensionNs="com.intellij">
-		<!--<codeInsight.lineMarkerProvider language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4LineMarkerProvider"/>-->
-		<fileTypeFactory implementation="org.antlr.intellij.plugin.ANTLRv4FileTypeFactory"/>
-		<lang.syntaxHighlighterFactory language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4SyntaxHighlighterFactory"/>
-		<lang.commenter language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4Commenter"/>
-		<colorSettingsPage implementation="org.antlr.intellij.plugin.configdialogs.ANTLRv4ColorsPage"/>
 		<additionalTextAttributes scheme="Default" file="colorSchemes/ANTLRv4Default.xml"/>
 		<additionalTextAttributes scheme="Darcula" file="colorSchemes/ANTLRv4Darcula.xml"/>
-		<lang.parserDefinition language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4ParserDefinition"/>
-		<lang.ast.leafFactory implementation="org.antlr.intellij.plugin.ANTLRv4ASTFactory"/>
-		<lang.psiStructureViewFactory language="ANTLRv4"
-									  implementationClass="org.antlr.intellij.plugin.structview.ANTLRv4StructureViewFactory"/>
-		<lang.foldingBuilder language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.folding.ANTLRv4FoldingBuilder"/>
 
-		<iconDescriptorUpdater implementation="consulo.antlr.ANTLR4IconDescriptorUpdater"/>
-
-		<externalAnnotator language="ANTLRv4" implementationClass="org.antlr.intellij.plugin.ANTLRv4ExternalAnnotator"/>
-		<lang.findUsagesProvider language="ANTLRv4"
-								 implementationClass="org.antlr.intellij.plugin.ANTLRv4FindUsagesProvider"/>
-
-		<defaultLiveTemplatesProvider implementation="org.antlr.intellij.plugin.templates.ANTLRLiveTemplatesProvider"/>
-		<liveTemplateContext implementation="org.antlr.intellij.plugin.templates.ANTLRGenericContext"/>
-		<liveTemplateContext implementation="org.antlr.intellij.plugin.templates.OutsideRuleContext"/>
-
-		<projectService serviceImplementation="org.antlr.intellij.plugin.ANTLRv4PluginController" lazy="false"/>
-
-		<toolWindow factoryClass="consulo.antlr.toolWindow.ANTLR4PreviewToolWindowFactory" id="ANTLR Preview" dispayName="ANTLR Preview"
-					icon="consulo.antlr4.Antlr4IconGroup@toolwindowantlr" anchor="bottom"/>
-
-		<toolWindow factoryClass="consulo.antlr.toolWindow.ANTLR4ConsoleToolWindowFactory" id="Tool Output" dispayName="Tool Output"
-					icon="consulo.antlr4.Antlr4IconGroup@toolwindowantlr" anchor="bottom"/>
 	</extensions>
 </consulo-plugin>

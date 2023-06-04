@@ -1,16 +1,18 @@
 package org.antlr.intellij.plugin.configdialogs;
 
-import java.util.Map;
-
+import consulo.annotation.component.ExtensionImpl;
+import consulo.colorScheme.TextAttributesKey;
+import consulo.colorScheme.setting.AttributesDescriptor;
+import consulo.colorScheme.setting.ColorDescriptor;
+import consulo.language.editor.colorScheme.setting.ColorSettingsPage;
+import consulo.language.editor.highlight.SyntaxHighlighter;
 import org.antlr.intellij.plugin.ANTLRv4SyntaxHighlighter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.openapi.fileTypes.SyntaxHighlighter;
-import com.intellij.openapi.options.colors.AttributesDescriptor;
-import com.intellij.openapi.options.colors.ColorDescriptor;
-import com.intellij.openapi.options.colors.ColorSettingsPage;
 
+import java.util.Map;
+
+@ExtensionImpl
 public class ANTLRv4ColorsPage implements ColorSettingsPage {
 	private static final AttributesDescriptor[] ATTRIBUTES =
 		{
@@ -52,12 +54,6 @@ public class ANTLRv4ColorsPage implements ColorSettingsPage {
 	@Override
 	public AttributesDescriptor[] getAttributeDescriptors() {
 		return ATTRIBUTES;
-	}
-
-	@NotNull
-	@Override
-	public ColorDescriptor[] getColorDescriptors() {
-		return ColorDescriptor.EMPTY_ARRAY;
 	}
 
 	@NotNull

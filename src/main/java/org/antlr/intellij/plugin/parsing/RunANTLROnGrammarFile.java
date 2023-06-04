@@ -1,17 +1,18 @@
 package org.antlr.intellij.plugin.parsing;
 
-import com.google.common.base.Strings;
-import com.intellij.execution.ui.ConsoleView;
-import com.intellij.execution.ui.ConsoleViewContentType;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.application.progress.Task;
+import consulo.execution.ui.console.ConsoleView;
+import consulo.module.content.ProjectRootManager;
+import consulo.project.ui.notification.Notification;
+import consulo.project.ui.notification.NotificationGroup;
+import consulo.project.ui.notification.NotificationType;
+import consulo.project.ui.notification.Notifications;
+import consulo.logging.Logger;
+import consulo.application.progress.ProgressIndicator;
+import consulo.project.Project;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.execution.ui.console.ConsoleViewContentType;
 import org.antlr.intellij.plugin.ANTLRv4PluginController;
 import org.antlr.intellij.plugin.configdialogs.ConfigANTLRPerGrammar;
 import org.antlr.intellij.plugin.preview.PreviewState;
@@ -38,7 +39,7 @@ public class RunANTLROnGrammarFile extends Task.Modal {
 	public static final Logger LOG = Logger.getInstance("RunANTLROnGrammarFile");
 	public static final String OUTPUT_DIR_NAME = "gen" ;
 	public static final String MISSING = "";
-	public static final String groupDisplayId = "ANTLR 4 Parser Generation";
+	public static final NotificationGroup groupDisplayId = NotificationGroup.balloonGroup("ANTLR 4 Parser Generation");
 
 	public VirtualFile grammarFile;
 	public Project project;
@@ -185,7 +186,7 @@ public class RunANTLROnGrammarFile extends Task.Modal {
 		String package_ = ConfigANTLRPerGrammar.getProp(project, qualFileName, ConfigANTLRPerGrammar.PROP_PACKAGE, MISSING);
 		if ( package_==MISSING) {
 			package_ = ProjectRootManager.getInstance(project).getFileIndex().getPackageNameByDirectory(vfile.getParent());
-			if ( Strings.isNullOrEmpty(package_)) {
+			if ( StringUtil.isEmptyOrSpaces(package_)) {
 				package_ = MISSING;
 			}
 		}

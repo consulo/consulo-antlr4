@@ -1,14 +1,15 @@
 package org.antlr.intellij.plugin.actions;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.ui.components.JBTextField;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.JBTextField;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ChooseExtractedRuleName extends DialogWrapper {
+public class ChooseExtractedRuleName extends DialogWrapper
+{
 	JBTextField nameField;
 	public String ruleName;
 

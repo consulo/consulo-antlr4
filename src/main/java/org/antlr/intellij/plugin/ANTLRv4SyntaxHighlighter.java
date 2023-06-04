@@ -1,18 +1,19 @@
 package org.antlr.intellij.plugin;
 
-import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
+import static consulo.colorScheme.TextAttributesKey.createTextAttributesKey;
 
+import consulo.codeEditor.HighlighterColors;
+import consulo.language.editor.highlight.SyntaxHighlighterBase;
 import org.antlr.intellij.plugin.adaptors.ANTLRv4LexerAdaptor;
 import org.antlr.intellij.plugin.parser.ANTLRv4Lexer;
 import org.jetbrains.annotations.NotNull;
-import com.intellij.lexer.Lexer;
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
-import com.intellij.openapi.editor.HighlighterColors;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.lexer.Lexer;
+import consulo.codeEditor.DefaultLanguageHighlighterColors;
+import consulo.colorScheme.TextAttributesKey;
+import consulo.language.ast.IElementType;
 
-public class ANTLRv4SyntaxHighlighter extends SyntaxHighlighterBase {
+public class ANTLRv4SyntaxHighlighter extends SyntaxHighlighterBase
+{
 	public static final TextAttributesKey KEYWORD =
 		createTextAttributesKey("ANTLRv4_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
 	public static final TextAttributesKey RULENAME =

@@ -1,15 +1,17 @@
 package org.antlr.intellij.plugin.actions;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.application.dumb.DumbAware;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.virtualFileSystem.VirtualFile;
 import org.antlr.intellij.plugin.configdialogs.ConfigANTLRPerGrammar;
 import org.antlr.v4.Tool;
 
-public class ConfigureANTLRAction extends AnAction implements DumbAware {
+public class ConfigureANTLRAction extends AnAction implements DumbAware
+{
 	public static final Logger LOG = Logger.getInstance("ConfigureANTLRAction");
 
 	@Override
@@ -19,7 +21,8 @@ public class ConfigureANTLRAction extends AnAction implements DumbAware {
 
 	@Override
 	public void actionPerformed(AnActionEvent e) {
-		if ( e.getProject()==null ) {
+		Project project = e.getData(Project.KEY);
+		if (project==null ) {
 			LOG.error("actionPerformed no project for "+e);
 			return; // whoa!
 		}
@@ -27,13 +30,13 @@ public class ConfigureANTLRAction extends AnAction implements DumbAware {
 		if ( grammarFile==null ) return;
 		LOG.info("actionPerformed "+grammarFile);
 
-		ConfigANTLRPerGrammar configDialog = new ConfigANTLRPerGrammar(e.getProject(), grammarFile.getPath());
-		configDialog.getPeer().setTitle("Configure ANTLR Tool "+ Tool.VERSION+" for "+ grammarFile.getName());
+		ConfigANTLRPerGrammar configDialog = new ConfigANTLRPerGrammar(project, grammarFile.getPath());
+		configDialog.setTitle("Configure ANTLR Tool "+ Tool.VERSION+" for "+ grammarFile.getName());
 
 		configDialog.show();
 
 		if ( configDialog.getExitCode()==DialogWrapper.OK_EXIT_CODE ) {
-			configDialog.saveValues(e.getProject(), grammarFile.getPath());
+			configDialog.saveValues(project, grammarFile.getPath());
 		}
 	}
 }

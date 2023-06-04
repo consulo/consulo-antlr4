@@ -1,18 +1,18 @@
 package org.antlr.intellij.plugin.actions;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.refactoring.actions.BaseRefactoringAction;
+import consulo.codeEditor.Editor;
+import consulo.document.Document;
+import consulo.language.editor.refactoring.action.BaseRefactoringAction;
+import consulo.language.psi.PsiElement;
+import consulo.logging.Logger;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.language.editor.LangDataKeys;
+import consulo.language.editor.PlatformDataKeys;
+import consulo.ui.ex.action.Presentation;
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiFile;
 import org.antlr.intellij.plugin.generators.LiteralChooser;
 import org.antlr.intellij.plugin.parser.ANTLRv4Parser;
 import org.antlr.intellij.plugin.parsing.ParsingResult;
@@ -57,7 +57,7 @@ public class GenerateLexerRulesForLiteralsAction extends AnAction {
 	@Override
 	public void actionPerformed(AnActionEvent e) {
 		LOG.info("actionPerformed GenerateLexerRulesForLiteralsAction");
-		final Project project = e.getProject();
+		final Project project = e.getData(Project.KEY);
 
 		final PsiFile psiFile = e.getData(LangDataKeys.PSI_FILE);
 		if (psiFile == null) {

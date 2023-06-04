@@ -9,9 +9,9 @@ import org.antlr.intellij.plugin.parser.ANTLRv4Parser;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.IFileElementType;
+import consulo.language.parser.PsiBuilder;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.IFileElementType;
 
 /** A specific kind of parser that knows how to parse ANTLR v4 grammar meta-language */
 public class ANTLRv4GrammarParser extends AntlrParser<ANTLRv4Parser> {

@@ -1,31 +1,28 @@
 package org.antlr.intellij.plugin.generators;
 
-import java.awt.BorderLayout;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.ScrollPaneFactory;
+import consulo.ui.ex.awt.event.DoubleClickListener;
+import consulo.ui.ex.awt.tree.CheckedTreeNode;
+import consulo.ui.ex.awt.tree.Tree;
+import consulo.ui.ex.awt.tree.TreeUtil;
+import org.antlr.intellij.plugin.Icons;
+import org.jetbrains.annotations.Nullable;
 
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
-import org.antlr.intellij.plugin.Icons;
-import org.jetbrains.annotations.Nullable;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.ui.CheckedTreeNode;
-import com.intellij.ui.DoubleClickListener;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.treeStructure.Tree;
-import com.intellij.util.ui.tree.TreeUtil;
-import consulo.awt.TargetAWT;
-
-public class LiteralChooser extends DialogWrapper {
+public class LiteralChooser extends DialogWrapper
+{
 	Tree tree;
 	LinkedHashSet<String> selectedElements =
 		new LinkedHashSet<String>();

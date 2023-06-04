@@ -1,8 +1,11 @@
 package org.antlr.intellij.plugin;
 
-import com.intellij.lang.CodeDocumentationAwareCommenter;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.tree.IElementType;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.CodeDocumentationAwareCommenter;
+import consulo.language.Language;
+import consulo.language.psi.PsiComment;
+import consulo.language.ast.IElementType;
+import jakarta.annotation.Nonnull;
 import org.antlr.intellij.plugin.parser.ANTLRv4Lexer;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 //        :	'//' ~[\r\n]*  -> channel(HIDDEN)
 //        ;
 
+@ExtensionImpl
 public class ANTLRv4Commenter implements CodeDocumentationAwareCommenter {
     @Nullable
     @Override
@@ -94,4 +98,11 @@ public class ANTLRv4Commenter implements CodeDocumentationAwareCommenter {
     public boolean isDocumentationComment(PsiComment element) {
         return element != null && element.getTokenType() == getDocumentationCommentTokenType();
     }
+
+	@Nonnull
+	@Override
+	public Language getLanguage()
+	{
+		return ANTLRv4Language.INSTANCE;
+	}
 }

@@ -1,19 +1,20 @@
 package org.antlr.intellij.plugin.actions;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.LogicalPosition;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import consulo.codeEditor.Editor;
+import consulo.document.Document;
+import consulo.language.editor.LangDataKeys;
+import consulo.language.editor.PlatformDataKeys;
+import consulo.language.psi.PsiElement;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.Presentation;
+import consulo.logging.Logger;
+import consulo.codeEditor.LogicalPosition;
+import consulo.document.FileDocumentManager;
+import consulo.application.dumb.DumbAware;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiFile;
+import consulo.ui.ex.action.AnAction;
 import org.antlr.intellij.plugin.ANTLRv4PluginController;
 import org.antlr.intellij.plugin.psi.ParserRuleRefNode;
 
@@ -81,7 +82,8 @@ public class TestRuleAction extends AnAction implements DumbAware {
 
 	@Override
 	public void actionPerformed(final AnActionEvent e) {
-		if ( e.getProject()==null ) {
+		Project project = e.getData(Project.KEY);
+		if (project==null ) {
 			LOG.error("actionPerformed no project for "+e);
 			return; // whoa!
 		}
@@ -90,7 +92,7 @@ public class TestRuleAction extends AnAction implements DumbAware {
 
 		LOG.info("actionPerformed "+grammarFile);
 
-		ANTLRv4PluginController controller = ANTLRv4PluginController.getInstance(e.getProject());
+		ANTLRv4PluginController controller = ANTLRv4PluginController.getInstance(project);
 		controller.getPreviewWindow().show(null);
 
 		ParserRuleRefNode r = MyActionUtils.getParserRuleSurroundingRef(e);

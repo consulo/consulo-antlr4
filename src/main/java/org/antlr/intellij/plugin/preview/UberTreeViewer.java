@@ -1,6 +1,6 @@
 package org.antlr.intellij.plugin.preview;
 
-import com.intellij.ui.JBColor;
+import consulo.ui.ex.JBColor;
 import org.antlr.intellij.plugin.parsing.PreviewInterpreterRuleContext;
 import org.antlr.v4.gui.TreeViewer;
 import org.antlr.v4.runtime.tree.Tree;

@@ -1,15 +1,15 @@
 package org.antlr.intellij.plugin.preview;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Splitter;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.JBColor;
-import com.intellij.ui.components.JBScrollPane;
-import com.intellij.ui.components.JBTabbedPane;
+import consulo.application.ApplicationManager;
+import consulo.application.util.SystemInfo;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+import consulo.ui.ex.awt.JBScrollPane;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.ui.ex.JBColor;
+import consulo.ui.ex.awt.JBTabbedPane;
+import consulo.logging.Logger;
+import consulo.ui.ex.awt.Splitter;
 import org.antlr.intellij.plugin.ANTLRv4PluginController;
 import org.antlr.intellij.plugin.parsing.ParsingResult;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;

@@ -1,11 +1,11 @@
 package org.antlr.intellij.plugin.psi;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReferenceBase;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReferenceBase;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.IncorrectOperationException;
+import consulo.project.Project;
 import org.antlr.intellij.plugin.ANTLRv4TokenTypes;
 import org.antlr.intellij.plugin.parser.ANTLRv4Lexer;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public class GrammarElementRef extends PsiReferenceBase<GrammarElementRefNode> {
+public class GrammarElementRef extends PsiReferenceBase<GrammarElementRefNode>
+{
 	String ruleName;
 	public GrammarElementRef(GrammarElementRefNode idNode, String ruleName) {
 		super(idNode, new TextRange(0, ruleName.length()));
@@ -73,7 +74,8 @@ public class GrammarElementRef extends PsiReferenceBase<GrammarElementRefNode> {
 	}
 
 	@Override
-	public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+	public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException
+	{
 		Project project = getElement().getProject();
 		myElement.replace(MyPsiUtils.createLeafFromText(project,
 														myElement.getContext(),

@@ -1,7 +1,7 @@
 package org.antlr.intellij.adaptor.lexer;
 
-import com.intellij.lang.Language;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.ast.IElementType;
+import consulo.language.Language;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

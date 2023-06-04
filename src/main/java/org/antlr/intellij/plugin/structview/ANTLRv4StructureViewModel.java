@@ -1,14 +1,14 @@
 package org.antlr.intellij.plugin.structview;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.ide.structureView.StructureViewModel;
-import com.intellij.ide.structureView.StructureViewModelBase;
-import com.intellij.ide.structureView.StructureViewTreeElement;
-import com.intellij.ide.util.treeView.smartTree.ActionPresentation;
-import com.intellij.ide.util.treeView.smartTree.ActionPresentationData;
-import com.intellij.ide.util.treeView.smartTree.Sorter;
-import com.intellij.ide.util.treeView.smartTree.SorterUtil;
-import com.intellij.psi.PsiFile;
+import consulo.fileEditor.structureView.StructureViewModel;
+import consulo.fileEditor.structureView.tree.ActionPresentation;
+import consulo.fileEditor.structureView.tree.ActionPresentationData;
+import consulo.fileEditor.structureView.tree.SorterUtil;
+import consulo.language.editor.structureView.StructureViewModelBase;
+import consulo.fileEditor.structureView.StructureViewTreeElement;
+import consulo.fileEditor.structureView.tree.Sorter;
+import consulo.language.psi.PsiFile;
+import consulo.application.AllIcons;
 import org.antlr.intellij.plugin.ANTLRv4FileRoot;
 import org.antlr.intellij.plugin.psi.LexerRuleSpecNode;
 import org.antlr.intellij.plugin.psi.ParserRuleSpecNode;

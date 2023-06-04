@@ -1,23 +1,9 @@
 package org.antlr.intellij.plugin.preview;
 
-import static com.intellij.icons.AllIcons.Actions.Find;
-import static com.intellij.icons.AllIcons.General.AutoscrollFromSource;
-import static org.antlr.intellij.plugin.ANTLRv4PluginController.PREVIEW_WINDOW_ID;
-
-import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreePath;
-
+import consulo.codeEditor.Editor;
+import consulo.ui.ex.action.*;
+import consulo.ui.ex.awt.JBScrollPane;
+import consulo.ui.ex.awtUnsafe.TargetAWT;
 import org.antlr.intellij.plugin.Icons;
 import org.antlr.v4.gui.TreeTextProvider;
 import org.antlr.v4.gui.TreeViewer;
@@ -27,14 +13,17 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.Tree;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionToolbar;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.ToggleAction;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.ui.components.JBScrollPane;
-import consulo.awt.TargetAWT;
+
+import javax.swing.*;
+import javax.swing.tree.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+
+import static consulo.application.AllIcons.Actions.Find;
+import static consulo.application.AllIcons.General.AutoscrollFromSource;
+import static org.antlr.intellij.plugin.ANTLRv4PluginController.PREVIEW_WINDOW_ID;
 
 public class JTreeViewer extends JPanel {
 
@@ -42,7 +31,7 @@ public class JTreeViewer extends JPanel {
 	public boolean highlightSource = false;
 	private PreviewPanel previewPanel;
 
-	private JTree myTree = new com.intellij.ui.treeStructure.Tree();
+	private JTree myTree = new consulo.ui.ex.awt.tree.Tree();
 	private TreeTextProvider treeTextProvider;
 
 	public JTreeViewer(Tree tree, PreviewPanel previewPanel) {
@@ -93,6 +82,7 @@ public class JTreeViewer extends JPanel {
 			scrollToSourceBtn
 		);
 		ActionToolbar bar = ActionManager.getInstance().createActionToolbar(PREVIEW_WINDOW_ID, actionGroup, true);
+		bar.setTargetComponent(this);
 
 		add(bar.getComponent(), BorderLayout.NORTH);
 		add(scrollPane, BorderLayout.CENTER);

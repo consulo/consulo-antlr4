@@ -1,16 +1,16 @@
 package org.antlr.intellij.plugin.actions;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.application.Result;
-import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import consulo.language.editor.LangDataKeys;
+import consulo.application.Result;
+import consulo.document.Document;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.editor.PlatformDataKeys;
+import consulo.language.editor.WriteCommandAction;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
 import org.antlr.intellij.plugin.parser.ANTLRv4Lexer;
 import org.antlr.intellij.plugin.parsing.ParsingResult;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;
@@ -25,7 +25,8 @@ import org.antlr.v4.runtime.tree.Trees;
 
 import java.util.List;
 
-public class InlineRuleAction extends AnAction {
+public class InlineRuleAction extends AnAction
+{
 	@Override
 	public void update(AnActionEvent e) {
 		MyActionUtils.showOnlyIfSelectionIsRule(e, "Inline and Remove Rule %s");
@@ -41,7 +42,7 @@ public class InlineRuleAction extends AnAction {
 		final PsiFile psiFile = e.getData(LangDataKeys.PSI_FILE);
 		if ( psiFile==null ) return;
 
-		final Project project = e.getProject();
+		final Project project = e.getData(Project.KEY);
 
 		Editor editor = e.getData(PlatformDataKeys.EDITOR);
 		if ( editor==null ) return;

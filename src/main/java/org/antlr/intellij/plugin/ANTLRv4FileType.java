@@ -3,7 +3,7 @@ package org.antlr.intellij.plugin;
 import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.openapi.fileTypes.LanguageFileType;
+import consulo.language.file.LanguageFileType;
 import consulo.ui.image.Image;
 
 public class ANTLRv4FileType extends LanguageFileType {

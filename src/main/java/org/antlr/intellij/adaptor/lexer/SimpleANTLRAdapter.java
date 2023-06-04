@@ -1,6 +1,6 @@
 package org.antlr.intellij.adaptor.lexer;
 
-import com.intellij.lang.Language;
+import consulo.language.Language;
 import org.antlr.v4.runtime.Lexer;
 
 /**

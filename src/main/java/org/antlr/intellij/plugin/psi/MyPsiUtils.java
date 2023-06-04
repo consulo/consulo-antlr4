@@ -1,31 +1,28 @@
 package org.antlr.intellij.plugin.psi;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import consulo.application.Result;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.TokenSet;
+import consulo.language.editor.WriteCommandAction;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiFileFactory;
+import consulo.language.psi.util.PsiElementFilter;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.version.LanguageVersionUtil;
+import consulo.project.Project;
+import consulo.util.collection.JBIterator;
 import org.antlr.intellij.plugin.ANTLRv4FileRoot;
 import org.antlr.intellij.plugin.ANTLRv4Language;
 import org.antlr.intellij.plugin.ANTLRv4TokenTypes;
 import org.antlr.intellij.plugin.parser.ANTLRv4Parser;
-import org.jetbrains.annotations.NotNull;
+import org.antlr.intellij.plugin.util.AbstractIterator;
 import org.jetbrains.annotations.Nullable;
-import com.google.common.base.Predicate;
-import com.google.common.collect.AbstractIterator;
-import com.google.common.collect.Iterators;
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.application.Result;
-import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.impl.PsiFileFactoryImpl;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
-import com.intellij.psi.util.PsiElementFilter;
-import com.intellij.psi.util.PsiTreeUtil;
-import consulo.lang.util.LanguageVersionUtil;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @SuppressWarnings("SimplifiableIfStatement")
 public class MyPsiUtils {
@@ -47,7 +44,7 @@ public class MyPsiUtils {
         return null;
     }
 
-    public static Iterable<PsiElement> findChildrenOfType(final PsiElement parent,IElementType type){
+    public static Iterable<PsiElement> findChildrenOfType(final PsiElement parent, IElementType type){
         return findChildrenOfType(parent, TokenSet.create(type));
     }
 
@@ -59,20 +56,14 @@ public class MyPsiUtils {
      * whose type is contained in the provided tokenset.
      */
     public static Iterable<PsiElement> findChildrenOfType(final PsiElement parent, final TokenSet types) {
-        return new Iterable<PsiElement>() {
-            @NotNull
-            @Override
-            public Iterator<PsiElement> iterator() {
-                return Iterators.filter(new DepthFirstPsiIterator(parent), includeElementTypes(types));
-            }
-        };
+		return () -> JBIterator.from(new DepthFirstPsiIterator(parent)).filter(includeElementTypes(types));
     }
 
-    static Predicate<PsiElement> includeElementTypes(final TokenSet tokenSet){
-        return new Predicate<PsiElement>() {
+    static consulo.util.lang.function.Condition<PsiElement> includeElementTypes(final TokenSet tokenSet){
+        return new consulo.util.lang.function.Condition<PsiElement>() {
 
             @Override
-            public boolean apply(@Nullable PsiElement input) {
+            public boolean value(@Nullable PsiElement input) {
                 if(input==null) return false;
                 ASTNode node = input.getNode();
                 if(node==null)return false;
@@ -81,7 +72,7 @@ public class MyPsiUtils {
         };
     }
 
-	static class DepthFirstPsiIterator extends AbstractIterator<PsiElement> {
+    static class DepthFirstPsiIterator extends AbstractIterator<PsiElement> {
 
         final PsiElement startFrom;
         DepthFirstPsiIterator(PsiElement startFrom){
@@ -145,14 +136,10 @@ public class MyPsiUtils {
 	public static PsiElement createLeafFromText(Project project, PsiElement context,
 												String text, IElementType type)
 	{
-		PsiFileFactoryImpl factory = (PsiFileFactoryImpl)PsiFileFactory.getInstance(project);
-		PsiElement el = factory.createElementFromText(text,
-													  ANTLRv4Language.INSTANCE,
-				LanguageVersionUtil.findDefaultVersion(ANTLRv4Language.INSTANCE),
-													  type,
-													  context);
-		return PsiTreeUtil.getDeepestFirst(el); // forces parsing of file!!
-		// start rule depends on root passed in
+		PsiFileFactory factory = PsiFileFactory.getInstance(project);
+		PsiFile file = factory.createFileFromText("parse.g4", LanguageVersionUtil.findDefaultVersion(ANTLRv4Language.INSTANCE), text, false, true, true);
+
+		return file.getNode().findChildByType(type).getPsi();
 	}
 
 	public static void replacePsiFileFromText(final Project project, final PsiFile psiFile, String text) {
@@ -169,9 +156,8 @@ public class MyPsiUtils {
 
 	public static PsiFile createFile(Project project, String text) {
 		String fileName = "a.g4"; // random name but must be .g4
-		PsiFileFactoryImpl factory = (PsiFileFactoryImpl)PsiFileFactory.getInstance(project);
-		return factory.createFileFromText(fileName, ANTLRv4Language.INSTANCE,
-										  text, false, false);
+		PsiFileFactory factory =  PsiFileFactory.getInstance(project);
+		return factory.createFileFromText(fileName, ANTLRv4Language.INSTANCE, text, false, false);
 	}
 
 	public static PsiElement[] collectAtActions(PsiElement root, final String tokenText) {

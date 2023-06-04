@@ -1,33 +1,41 @@
 package org.antlr.intellij.plugin;
 
-import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderFactory;
-import com.intellij.execution.ui.ConsoleView;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.editor.event.EditorFactoryAdapter;
-import com.intellij.openapi.editor.event.EditorFactoryEvent;
-import com.intellij.openapi.editor.event.EditorMouseAdapter;
-import com.intellij.openapi.editor.event.EditorMouseEvent;
-import com.intellij.openapi.fileEditor.*;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.startup.StartupManager;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileAdapter;
-import com.intellij.openapi.vfs.VirtualFileEvent;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowAnchor;
-import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.util.messages.MessageBusConnection;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceAPI;
+import consulo.annotation.component.ServiceImpl;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.EditorFactory;
+import consulo.codeEditor.event.EditorFactoryAdapter;
+import consulo.codeEditor.event.EditorFactoryEvent;
+import consulo.codeEditor.event.EditorMouseEvent;
+import consulo.codeEditor.event.EditorMouseListener;
+import consulo.component.messagebus.MessageBusConnection;
+import consulo.disposer.Disposable;
+import consulo.disposer.Disposer;
+import consulo.document.Document;
+import consulo.document.FileDocumentManager;
+import consulo.execution.ui.console.ConsoleView;
+import consulo.execution.ui.console.TextConsoleBuilder;
+import consulo.execution.ui.console.TextConsoleBuilderFactory;
+import consulo.fileEditor.FileEditorManager;
+import consulo.fileEditor.event.FileEditorManagerAdapter;
+import consulo.fileEditor.event.FileEditorManagerEvent;
+import consulo.fileEditor.event.FileEditorManagerListener;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ui.wm.ToolWindowManager;
+import consulo.ui.ex.toolWindow.ToolWindow;
 import consulo.util.dataholder.Key;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.VirtualFileManager;
+import consulo.virtualFileSystem.event.VirtualFileEvent;
+import consulo.virtualFileSystem.event.VirtualFileListener;
+import jakarta.annotation.Nonnull;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.antlr.intellij.adaptor.parser.SyntaxErrorListener;
 import org.antlr.intellij.plugin.parsing.ParsingResult;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;
@@ -40,8 +48,6 @@ import org.antlr.v4.tool.Grammar;
 import org.antlr.v4.tool.LexerGrammar;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -61,6 +67,9 @@ import java.util.Map;
  * needed for the preview window. Updates must be made atomically so that
  * the grammars and editors are consistently associated with the same window.
  */
+@ServiceAPI(ComponentScope.PROJECT)
+@ServiceImpl
+@Singleton
 public class ANTLRv4PluginController implements Disposable
 {
 	public static final Key<GrammarEditorMouseAdapter> EDITOR_MOUSE_LISTENER_KEY = Key.create("EDITOR_MOUSE_LISTENER_KEY");
@@ -83,20 +92,16 @@ public class ANTLRv4PluginController implements Disposable
 	public MyVirtualFileAdapter myVirtualFileAdapter = new MyVirtualFileAdapter();
 	public MyFileEditorManagerAdapter myFileEditorManagerAdapter = new MyFileEditorManagerAdapter();
 
-	public ANTLRv4PluginController(Project project, StartupManager startupManager)
+	@Inject
+	public ANTLRv4PluginController(Project project)
 	{
 		myProject = project;
-		if(project.isDefault())
-		{
-			return;
-		}
-		startupManager.registerPostStartupActivity(uiAccess -> installListeners());
 	}
 
 	@Nonnull
 	public static ANTLRv4PluginController getInstance(Project project)
 	{
-		return project.getComponent(ANTLRv4PluginController.class);
+		return project.getInstance(ANTLRv4PluginController.class);
 	}
 
 	@Override
@@ -126,7 +131,7 @@ public class ANTLRv4PluginController implements Disposable
 		// Listen for editor window changes
 		MessageBusConnection msgBus = myProject.getMessageBus().connect(myProject);
 		msgBus.subscribe(
-				FileEditorManagerListener.FILE_EDITOR_MANAGER,
+				FileEditorManagerListener.class,
 				myFileEditorManagerAdapter
 		);
 
@@ -521,7 +526,7 @@ public class ANTLRv4PluginController implements Disposable
 		return null;
 	}
 
-	private class GrammarEditorMouseAdapter extends EditorMouseAdapter
+	private class GrammarEditorMouseAdapter implements EditorMouseListener
 	{
 		@Override
 		public void mouseClicked(EditorMouseEvent e)
@@ -535,7 +540,7 @@ public class ANTLRv4PluginController implements Disposable
 		}
 	}
 
-	private class MyVirtualFileAdapter extends VirtualFileAdapter
+	private class MyVirtualFileAdapter implements VirtualFileListener
 	{
 		@Override
 		public void contentsChanged(VirtualFileEvent event)

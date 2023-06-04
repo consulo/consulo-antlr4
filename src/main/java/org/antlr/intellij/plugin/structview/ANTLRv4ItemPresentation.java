@@ -1,7 +1,7 @@
 package org.antlr.intellij.plugin.structview;
 
-import javax.swing.Icon;
-
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.util.PsiTreeUtil;
 import org.antlr.intellij.plugin.ANTLRv4FileRoot;
 import org.antlr.intellij.plugin.ANTLRv4TokenTypes;
 import org.antlr.intellij.plugin.Icons;
@@ -10,11 +10,8 @@ import org.antlr.intellij.plugin.psi.GrammarSpecNode;
 import org.antlr.intellij.plugin.psi.MyPsiUtils;
 import org.antlr.intellij.plugin.psi.ParserRuleRefNode;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.lang.ASTNode;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
-import consulo.awt.TargetAWT;
+import consulo.navigation.ItemPresentation;
+import consulo.language.psi.PsiElement;
 import consulo.ui.image.Image;
 
 public class ANTLRv4ItemPresentation implements ItemPresentation {

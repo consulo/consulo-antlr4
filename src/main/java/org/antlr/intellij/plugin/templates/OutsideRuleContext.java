@@ -1,13 +1,15 @@
 package org.antlr.intellij.plugin.templates;
 
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
 import org.antlr.intellij.plugin.parser.ANTLRv4Parser;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public class OutsideRuleContext extends ANTLRLiveTemplateContext {
 	public OutsideRuleContext() {
 		super("ANTLR_OUTSIDE", "Outside rule", ANTLRGenericContext.class);

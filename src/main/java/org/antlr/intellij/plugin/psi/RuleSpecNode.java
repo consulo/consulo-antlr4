@@ -1,11 +1,11 @@
 package org.antlr.intellij.plugin.psi;
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.util.IncorrectOperationException;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.IElementType;
+import consulo.language.impl.psi.ASTWrapperPsiElement;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiNamedElement;
+import consulo.language.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +30,8 @@ public abstract class RuleSpecNode extends ASTWrapperPsiElement implements PsiNa
 	public abstract GrammarElementRefNode getId();
 
 	@Override
-	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException {
+	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	{
 		/*
 		From doc: "Creating a fully correct AST node from scratch is
 		          quite difficult. Thus, surprisingly, the easiest way to

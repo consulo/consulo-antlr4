@@ -1,9 +1,9 @@
 package org.antlr.intellij.plugin.templates;
 
-import com.intellij.codeInsight.template.TemplateContextType;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiUtilBase;
+import consulo.language.editor.template.context.TemplateContextType;
+import consulo.language.editor.util.PsiUtilBase;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
 import org.antlr.intellij.plugin.ANTLRv4Language;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;

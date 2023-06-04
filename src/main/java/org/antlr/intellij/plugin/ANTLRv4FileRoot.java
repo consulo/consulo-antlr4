@@ -1,10 +1,10 @@
 package org.antlr.intellij.plugin;
 
 import org.jetbrains.annotations.NotNull;
-import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiElement;
+import consulo.language.impl.psi.PsiFileBase;
+import consulo.virtualFileSystem.fileType.FileType;
+import consulo.language.file.FileViewProvider;
+import consulo.language.psi.PsiElement;
 
 public class ANTLRv4FileRoot extends PsiFileBase {
     public ANTLRv4FileRoot(@NotNull FileViewProvider viewProvider) {

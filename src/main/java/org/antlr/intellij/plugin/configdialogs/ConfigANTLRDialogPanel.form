@@ -73,13 +73,13 @@
           <text value="Output directory where all output is generated"/>
         </properties>
       </component>
-      <component id="a65b1" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="outputDirField">
+      <component id="a65b1" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="outputDirField">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
       </component>
-      <component id="df9a9" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="libDirField">
+      <component id="df9a9" class="consulo.ui.ex.awt.TextFieldWithBrowseButton" binding="libDirField">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>

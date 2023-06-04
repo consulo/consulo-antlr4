@@ -1,16 +1,18 @@
 package org.antlr.intellij.plugin;
 
-import com.intellij.lang.cacheBuilder.WordsScanner;
-import com.intellij.lang.findUsages.FindUsagesProvider;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.Language;
+import consulo.language.findUsage.FindUsagesProvider;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.util.PsiTreeUtil;
+import jakarta.annotation.Nonnull;
 import org.antlr.intellij.plugin.psi.LexerRuleRefNode;
 import org.antlr.intellij.plugin.psi.LexerRuleSpecNode;
 import org.antlr.intellij.plugin.psi.ParserRuleRefNode;
 import org.antlr.intellij.plugin.psi.ParserRuleSpecNode;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+@ExtensionImpl
 public class ANTLRv4FindUsagesProvider implements FindUsagesProvider {
 	@Override
 	public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
@@ -18,33 +20,6 @@ public class ANTLRv4FindUsagesProvider implements FindUsagesProvider {
 		return psiElement instanceof LexerRuleSpecNode ||
 			   psiElement instanceof ParserRuleSpecNode;
 //		return psiElement instanceof PsiNamedElement;
-	}
-
-	@Nullable
-	@Override
-	public WordsScanner getWordsScanner() {
-		return null; // seems ok as JavaFindUsagesProvider does same thing
-//		System.out.println("getWordsScanner()");
-//		final ANTLRv4Lexer lexer = new ANTLRv4Lexer(null);
-//
-//		LexerATNSimulator sim =
-//			ANTLRUtils.getLexerATNSimulator(lexer, ANTLRv4Lexer._ATN, lexer.getInterpreter().decisionToDFA,
-//											lexer.getInterpreter().getSharedContextCache());
-//		lexer.setInterpreter(sim);
-//		WordsScanner scanner =
-//			new DefaultWordsScanner(new LexerAdaptor(lexer),
-//									TokenSet.create(ANTLRv4TokenTypes.RULE_REF,
-//													ANTLRv4TokenTypes.TOKEN_REF),
-//									ANTLRv4TokenTypes.COMMENTS,
-//									TokenSet.create(ANTLRv4TokenTypes.STRING_LITERAL)
-//			);
-//		return scanner;
-	}
-
-	@Nullable
-	@Override
-	public String getHelpId(@NotNull PsiElement element) {
-		return null;
 	}
 
 	@NotNull
@@ -72,5 +47,12 @@ public class ANTLRv4FindUsagesProvider implements FindUsagesProvider {
 	@Override
 	public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
 		return getDescriptiveName(element);
+	}
+
+	@Nonnull
+	@Override
+	public Language getLanguage()
+	{
+		return ANTLRv4Language.INSTANCE;
 	}
 }
