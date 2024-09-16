@@ -75,7 +75,7 @@ public class RunANTLROnGrammarFile extends Task.Modal {
 				Grammar g = previewState.lg;
 				String language = g.getOptionString(ConfigANTLRPerGrammar.PROP_LANGUAGE);
 				Tool tool = ParsingUtils.createANTLRToolForLoadingGrammars();
-				CodeGenerator gen = new CodeGenerator(tool, g, language);
+				CodeGenerator gen = CodeGenerator.create(tool, g, language);
 				gen.writeVocabFile();
 			}
 		}
@@ -97,7 +97,7 @@ public class RunANTLROnGrammarFile extends Task.Modal {
 		}
 
 		String language = g.getOptionString(ConfigANTLRPerGrammar.PROP_LANGUAGE);
-		CodeGenerator generator = new CodeGenerator(null, g, language);
+		CodeGenerator generator = CodeGenerator.create(null, g, language);
 		String recognizerFileName = generator.getRecognizerFileName();
 
 		VirtualFile contentRoot = ConfigANTLRPerGrammar.getContentRoot(project, grammarFile);

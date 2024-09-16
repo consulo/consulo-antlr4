@@ -12,6 +12,7 @@ import consulo.ui.ex.action.AnActionEvent;
 import consulo.ui.ex.action.Presentation;
 import consulo.util.lang.function.Condition;
 import consulo.virtualFileSystem.VirtualFile;
+import org.antlr.intellij.plugin.ANTLRv4FileType;
 import org.antlr.intellij.plugin.profiler.ProfilerPanel;
 import org.antlr.intellij.plugin.psi.*;
 import org.antlr.v4.runtime.atn.DecisionEventInfo;
@@ -25,19 +26,14 @@ import java.util.List;
 public class MyActionUtils {
 	public static void selectedFileIsGrammar(AnActionEvent e) {
 		VirtualFile vfile = getGrammarFileFromEvent(e);
-		if ( vfile==null ) {
-			e.getPresentation().setEnabled(false);
-			return;
-		}
-		e.getPresentation().setEnabled(true); // enable action if we're looking at grammar file
-		e.getPresentation().setVisible(true);
+		e.getPresentation().setEnabledAndVisible(vfile != null);
 	}
 
 	public static VirtualFile getGrammarFileFromEvent(AnActionEvent e) {
 		VirtualFile[] files = e.getData(LangDataKeys.VIRTUAL_FILE_ARRAY);
 		if ( files==null || files.length==0 ) return null;
 		VirtualFile vfile = files[0];
-		if ( vfile!=null && vfile.getName().endsWith(".g4") ) {
+		if ( vfile!=null && vfile.getFileType() == ANTLRv4FileType.INSTANCE) {
 			return vfile;
 		}
 		return null;
