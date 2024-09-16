@@ -5,9 +5,9 @@
 open module org.antlr.intellij.plugin {
 	requires consulo.ide.api;
 
-	requires antlr.runtime;
 	requires antlr4;
-	requires antlr4.runtime;
+	requires antlr.runtime;
+	requires org.antlr.antlr4.runtime;
 	requires ST4;
 
 	// TODO remove in future

@@ -111,10 +111,4 @@ For really big files and slow grammars, there is an appreciable delay when displ
 			<add-to-group group-id="RefactoringMenu" anchor="after" relative-to-action="antlr.ExtractRule"/>
 		</action>
 	</actions>
-
-	<extensions defaultExtensionNs="com.intellij">
-		<additionalTextAttributes scheme="Default" file="colorSchemes/ANTLRv4Default.xml"/>
-		<additionalTextAttributes scheme="Darcula" file="colorSchemes/ANTLRv4Darcula.xml"/>
-
-	</extensions>
 </consulo-plugin>

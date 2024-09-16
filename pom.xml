@@ -40,12 +40,16 @@
 		</repository>
 	</repositories>
 
+	<properties>
+		<antlr4.version>4.13.1</antlr4.version>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr4-maven-plugin</artifactId>
-				<version>4.3</version>
+				<version>${antlr4.version}</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
@@ -89,32 +93,27 @@
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr4</artifactId>
-			<version>4.7.1</version>
+			<version>${antlr4.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr4-runtime</artifactId>
-			<version>4.7.1</version>
+			<version>${antlr4.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr-runtime</artifactId>
-			<version>3.5.2</version>
+			<version>3.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>ST4</artifactId>
-			<version>4.0.8</version>
+			<version>4.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.abego.treelayout</groupId>
 			<artifactId>org.abego.treelayout.core</artifactId>
 			<version>1.0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>javax.json</artifactId>
-			<version>1.0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>consulo.internal</groupId>
