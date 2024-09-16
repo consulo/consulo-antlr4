@@ -10,7 +10,7 @@ import consulo.ui.ex.awt.JBPanel;
 import consulo.ui.ex.popup.IPopupChooserBuilder;
 import consulo.ui.ex.popup.JBPopup;
 import consulo.ui.ex.popup.JBPopupFactory;
-import org.antlr.intellij.plugin.Utils;
+import consulo.util.collection.ContainerUtil;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;
 import org.antlr.intellij.plugin.parsing.PreviewInterpreterRuleContext;
 import org.antlr.v4.gui.TreeViewer;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class ShowAmbigTreesDialog extends JDialog {
+public class ShowAmbigTreesDialog extends JDialog  {
 	public static final int MAX_PHRASE_WIDTH = 25;
 	private JPanel contentPane;
 	private JButton buttonOK;
@@ -253,14 +253,14 @@ public class ShowAmbigTreesDialog extends JDialog {
 		                           first_uleaf.getSymbol().getTokenIndex());
 
 		// filter so we start in same place
-		tleaves = Utils.filter(tleaves,
+		tleaves = ContainerUtil.filter(tleaves,
 		                       new Predicate<Tree>() {
 			                       @Override
 			                       public boolean test(Tree t) {
 				                       return ((Token) t.getPayload()).getTokenIndex()>=first;
 			                       }
 		                       });
-		uleaves = Utils.filter(uleaves, t1 -> ((Token) t1.getPayload()).getTokenIndex()>=first);
+		uleaves = ContainerUtil.filter(uleaves, t1 -> ((Token) t1.getPayload()).getTokenIndex()>=first);
 		int n = Math.min(tleaves.size(), uleaves.size());
 		for (int i = 0; i<n; i++) { // for each leaf in t and u
 			Tree tleaf = tleaves.get(i);

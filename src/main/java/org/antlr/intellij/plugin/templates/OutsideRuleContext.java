@@ -3,6 +3,7 @@ package org.antlr.intellij.plugin.templates;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
+import consulo.localize.LocalizeValue;
 import org.antlr.intellij.plugin.parser.ANTLRv4Parser;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 @ExtensionImpl
 public class OutsideRuleContext extends ANTLRLiveTemplateContext {
 	public OutsideRuleContext() {
-		super("ANTLR_OUTSIDE", "Outside rule", ANTLRGenericContext.class);
+		super("ANTLR_OUTSIDE", LocalizeValue.localizeTODO("Outside rule"), ANTLRGenericContext.class);
 	}
 
 	@Override

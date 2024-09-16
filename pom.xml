@@ -41,7 +41,7 @@
 	</repositories>
 
 	<properties>
-		<antlr4.version>4.13.1</antlr4.version>
+		<antlr4.version>4.13.2</antlr4.version>
 	</properties>
 
 	<build>
@@ -58,6 +58,13 @@
 						</goals>
 					</execution>
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.antlr</groupId>
+						<artifactId>antlr4</artifactId>
+						<version>${antlr4.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>consulo.maven</groupId>

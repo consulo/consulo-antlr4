@@ -1,17 +1,19 @@
 package org.antlr.intellij.plugin.templates;
 
+import consulo.language.editor.template.context.BaseTemplateContextType;
 import consulo.language.editor.template.context.TemplateContextType;
 import consulo.language.editor.util.PsiUtilBase;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
+import consulo.localize.LocalizeValue;
 import org.antlr.intellij.plugin.ANTLRv4Language;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class ANTLRLiveTemplateContext extends TemplateContextType {
+public abstract class ANTLRLiveTemplateContext extends BaseTemplateContextType {
 	public ANTLRLiveTemplateContext(@NotNull @NonNls String id,
-									@NotNull String presentableName,
+									@NotNull LocalizeValue presentableName,
 									@Nullable Class<? extends TemplateContextType> baseContextType)
 	{
 		super(id, presentableName, baseContextType);
