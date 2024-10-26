@@ -12,3 +12,6 @@
 .consulo
 
 target/
+sandbox/
+
+*.interp
