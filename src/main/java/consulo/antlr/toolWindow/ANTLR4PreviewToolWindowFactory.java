@@ -55,7 +55,7 @@ public class ANTLR4PreviewToolWindowFactory implements ToolWindowFactory
 	@Override
 	public Image getIcon()
 	{
-		return Antlr4IconGroup.antlr();
+		return Antlr4IconGroup.toolwindowantlr();
 	}
 
 	@Nonnull
