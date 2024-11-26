@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
-<path fill="#6C707E" d="M8.8,3.7C8.7,3.3,8.3,3.1,7.9,3.1c-0.4,0-0.8,0.2-1,0.6c0,0,0,0,0,0l-3.2,7.2c-0.2,0.3-0.1,0.8,0.4,0.9
+<path fill="#CED0D6" d="M8.8,3.7C8.7,3.3,8.3,3.1,7.9,3.1c-0.4,0-0.8,0.2-1,0.6c0,0,0,0,0,0l-3.2,7.2c-0.2,0.3-0.1,0.8,0.4,0.9
 	c0.4,0.1,0.7,0,0.9-0.4L7.9,5l2,4.4l-3.1,0l4.4,2.5c0.2,0.1,0.4,0,0.6,0c0.3-0.2,0.5-0.6,0.3-0.9L8.8,3.7z"/>
-<path fill="none" stroke="#6C707E" d="M8,1.5c3.6,0,6.5,2.9,6.5,6.5s-2.9,6.5-6.5,6.5S1.5,11.6,1.5,8
+<path fill="none" stroke="#CED0D6" d="M8,1.5c3.6,0,6.5,2.9,6.5,6.5s-2.9,6.5-6.5,6.5S1.5,11.6,1.5,8
 	S4.4,1.5,8,1.5z"/>
 </svg>
