@@ -16,7 +16,8 @@
 
 package org.antlr.intellij.plugin.util;
 
-import javax.annotation.CheckForNull;
+import jakarta.annotation.Nullable;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -91,7 +92,7 @@ public abstract class AbstractIterator<T extends Object> implements Iterator<T>
 		FAILED,
 	}
 
-	@CheckForNull
+	@Nullable
 	private T next;
 
 	/**
