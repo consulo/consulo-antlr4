@@ -1,14 +1,8 @@
 package org.antlr.intellij.plugin.parsing;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import consulo.execution.ui.console.ConsoleView;
+import consulo.execution.ui.console.ConsoleViewContentType;
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
 import org.antlr.intellij.adaptor.parser.SyntaxError;
 import org.antlr.intellij.adaptor.parser.SyntaxErrorListener;
 import org.antlr.intellij.plugin.ANTLRv4PluginController;
@@ -20,6 +14,7 @@ import org.antlr.intellij.plugin.preview.PreviewState;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.v4.Tool;
 import org.antlr.v4.parse.ANTLRParser;
+import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.misc.Pair;
@@ -35,9 +30,10 @@ import org.antlr.v4.tool.LexerGrammar;
 import org.antlr.v4.tool.Rule;
 import org.antlr.v4.tool.ast.GrammarRootAST;
 import org.jetbrains.annotations.NotNull;
-import consulo.execution.ui.console.ConsoleViewContentType;
-import consulo.project.Project;
-import consulo.virtualFileSystem.VirtualFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 public class ParsingUtils {
 	public static Grammar BAD_PARSER_GRAMMAR;
@@ -329,12 +325,12 @@ public class ParsingUtils {
 
 		// basically here I am mimicking the loadGrammar() method from Tool
 		// so that I can check for an empty AST coming back.
-		ConsoleView console = ANTLRv4PluginController.getInstance(project).getConsole();
+        ANTLRv4PluginController controller = ANTLRv4PluginController.getInstance(project);
 		GrammarRootAST grammarRootAST = parseGrammar(project, antlr, grammarFileName);
 		if ( grammarRootAST==null ) {
 			File f = new File(grammarFileName);
 			String msg = "Empty or bad grammar in file "+f.getName();
-			console.print(msg+"\n", ConsoleViewContentType.ERROR_OUTPUT);
+            controller.printToConsole(consoleView -> consoleView.print(msg + "\n", ConsoleViewContentType.ERROR_OUTPUT));
 			return null;
 		}
 		// Create a grammar from the AST so we can figure out what type it is
@@ -356,7 +352,7 @@ public class ParsingUtils {
 		antlr.process(g, false);
 		if ( listener.grammarErrorMessages.size()!=0 ) {
 			String msg = Utils.join(listener.grammarErrorMessages.iterator(), "\n");
-			console.print(msg+"\n", ConsoleViewContentType.ERROR_OUTPUT);
+            controller.printToConsole(console -> console.print(msg + "\n", ConsoleViewContentType.ERROR_OUTPUT));
 			return null; // upon error, bail
 		}
 
@@ -436,9 +432,9 @@ public class ParsingUtils {
 			}
 			if ( listener.grammarErrorMessages.size()!=0 ) {
 				lg = null;
-				ConsoleView console = ANTLRv4PluginController.getInstance(project).getConsole();
+                ANTLRv4PluginController controller = ANTLRv4PluginController.getInstance(project);
 				String msg = Utils.join(listener.grammarErrorMessages.iterator(), "\n");
-				console.print(msg+"\n", ConsoleViewContentType.ERROR_OUTPUT);
+                controller.printToConsole(view -> view.print(msg+"\n", ConsoleViewContentType.ERROR_OUTPUT));
 			}
 		}
 		return lg;

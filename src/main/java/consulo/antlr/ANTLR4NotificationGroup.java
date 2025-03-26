@@ -13,11 +13,9 @@ import java.util.function.Consumer;
  * @since 26/05/2023
  */
 @ExtensionImpl
-public class ANTLR4NotificationGroup implements NotificationGroupContributor
-{
-	@Override
-	public void contribute(@Nonnull Consumer<NotificationGroup> consumer)
-	{
-		consumer.accept(RunANTLROnGrammarFile.groupDisplayId);
-	}
+public class ANTLR4NotificationGroup implements NotificationGroupContributor {
+    @Override
+    public void contribute(@Nonnull Consumer<NotificationGroup> consumer) {
+        consumer.accept(RunANTLROnGrammarFile.groupDisplayId);
+    }
 }
