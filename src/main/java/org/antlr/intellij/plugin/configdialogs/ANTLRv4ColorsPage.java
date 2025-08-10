@@ -1,16 +1,12 @@
 package org.antlr.intellij.plugin.configdialogs;
 
 import consulo.annotation.component.ExtensionImpl;
-import consulo.colorScheme.TextAttributesKey;
 import consulo.colorScheme.setting.AttributesDescriptor;
-import consulo.colorScheme.setting.ColorDescriptor;
 import consulo.language.editor.colorScheme.setting.ColorSettingsPage;
 import consulo.language.editor.highlight.SyntaxHighlighter;
+import consulo.localize.LocalizeValue;
 import org.antlr.intellij.plugin.ANTLRv4SyntaxHighlighter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
 
 @ExtensionImpl
 public class ANTLRv4ColorsPage implements ColorSettingsPage {
@@ -44,12 +40,6 @@ public class ANTLRv4ColorsPage implements ColorSettingsPage {
 			"KEYWORD : 'keyword' -> popMode;\n";
 	}
 
-	@Nullable
-	@Override
-	public Map<String, TextAttributesKey> getAdditionalHighlightingTagToDescriptorMap() {
-		return null;
-	}
-
 	@NotNull
 	@Override
 	public AttributesDescriptor[] getAttributeDescriptors() {
@@ -58,7 +48,7 @@ public class ANTLRv4ColorsPage implements ColorSettingsPage {
 
 	@NotNull
 	@Override
-	public String getDisplayName() {
-		return "ANTLR";
+	public LocalizeValue getDisplayName() {
+		return LocalizeValue.localizeTODO("ANTLR");
 	}
 }
