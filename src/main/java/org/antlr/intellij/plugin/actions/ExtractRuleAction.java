@@ -7,6 +7,7 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.language.editor.PlatformDataKeys;
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.ui.ex.action.Presentation;
 import consulo.application.Result;
 import consulo.codeEditor.Editor;
@@ -25,8 +26,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 
-public class ExtractRuleAction extends AnAction
-{
+public class ExtractRuleAction extends AnAction implements AnActionWithSyncUpdate {
 	/** Only show if user has selected region and is in a lexer or parser rule */
 	@Override
 	public void update(AnActionEvent e) {

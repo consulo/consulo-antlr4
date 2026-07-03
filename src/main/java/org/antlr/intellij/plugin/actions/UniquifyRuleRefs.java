@@ -11,6 +11,7 @@ import consulo.language.editor.PlatformDataKeys;
 import consulo.project.Project;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import org.antlr.intellij.plugin.parser.ANTLRv4Lexer;
 import org.antlr.intellij.plugin.parsing.ParsingResult;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;
@@ -27,8 +28,7 @@ import java.util.List;
 /** Make every ref to a rule unique by dup'ing the rule and making them
  *  rule1, rule2, etc...
  */
-public class UniquifyRuleRefs extends AnAction
-{
+public class UniquifyRuleRefs extends AnAction implements AnActionWithSyncUpdate {
 	@Override
 	public void update(AnActionEvent e) {
 		MyActionUtils.showOnlyIfSelectionIsRule(e, "Dup to Make %s Refs Unique");

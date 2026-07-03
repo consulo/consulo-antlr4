@@ -9,6 +9,7 @@ import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.language.editor.LangDataKeys;
 import consulo.language.editor.PlatformDataKeys;
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.ui.ex.action.Presentation;
 import consulo.project.Project;
 import consulo.virtualFileSystem.VirtualFile;
@@ -33,7 +34,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class GenerateLexerRulesForLiteralsAction extends AnAction {
+public class GenerateLexerRulesForLiteralsAction extends AnAction implements AnActionWithSyncUpdate {
 	public static final Logger LOG = Logger.getInstance("GenerateLexerRulesForLiterals");
 
 	/** Only show if selection is a literal */

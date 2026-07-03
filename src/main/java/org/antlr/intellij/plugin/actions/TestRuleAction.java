@@ -7,6 +7,7 @@ import consulo.language.editor.PlatformDataKeys;
 import consulo.language.psi.PsiElement;
 import consulo.project.Project;
 import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.ui.ex.action.Presentation;
 import consulo.logging.Logger;
 import consulo.codeEditor.LogicalPosition;
@@ -22,7 +23,7 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
-public class TestRuleAction extends AnAction implements DumbAware {
+public class TestRuleAction extends AnAction implements DumbAware, AnActionWithSyncUpdate {
 	public static final Logger LOG = Logger.getInstance("ANTLR TestRuleAction");
 
 	/** Only show if selection is a grammar and in a rule */

@@ -13,6 +13,7 @@ import consulo.project.Project;
 import consulo.language.psi.PsiDocumentManager;
 import consulo.project.ui.notification.Notification;
 import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.virtualFileSystem.LocalFileSystem;
 import consulo.virtualFileSystem.VirtualFile;
 import org.antlr.intellij.plugin.configdialogs.ConfigANTLRPerGrammar;
@@ -25,7 +26,7 @@ import java.util.Set;
 /** Generate parser from ANTLR grammar;
  *  learned how to do from Grammar-Kit by Gregory Shrago.
  */
-public class GenerateParserAction extends AnAction implements DumbAware {
+public class GenerateParserAction extends AnAction implements DumbAware, AnActionWithSyncUpdate {
 	public static final Logger LOG = Logger.getInstance("ANTLR GenerateAction");
 
 	@Override

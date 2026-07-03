@@ -11,6 +11,7 @@ import consulo.language.editor.PlatformDataKeys;
 import consulo.language.editor.WriteCommandAction;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import org.antlr.intellij.plugin.parser.ANTLRv4Lexer;
 import org.antlr.intellij.plugin.parsing.ParsingResult;
 import org.antlr.intellij.plugin.parsing.ParsingUtils;
@@ -25,8 +26,7 @@ import org.antlr.v4.runtime.tree.Trees;
 
 import java.util.List;
 
-public class InlineRuleAction extends AnAction
-{
+public class InlineRuleAction extends AnAction implements AnActionWithSyncUpdate {
 	@Override
 	public void update(AnActionEvent e) {
 		MyActionUtils.showOnlyIfSelectionIsRule(e, "Inline and Remove Rule %s");

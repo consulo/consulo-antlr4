@@ -5,13 +5,13 @@ import consulo.logging.Logger;
 import consulo.project.Project;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.ui.ex.awt.DialogWrapper;
 import consulo.virtualFileSystem.VirtualFile;
 import org.antlr.intellij.plugin.configdialogs.ConfigANTLRPerGrammar;
 import org.antlr.v4.Tool;
 
-public class ConfigureANTLRAction extends AnAction implements DumbAware
-{
+public class ConfigureANTLRAction extends AnAction implements DumbAware, AnActionWithSyncUpdate {
 	public static final Logger LOG = Logger.getInstance("ConfigureANTLRAction");
 
 	@Override
