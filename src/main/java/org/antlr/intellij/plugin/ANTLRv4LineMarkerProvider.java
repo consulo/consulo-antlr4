@@ -6,11 +6,10 @@ import consulo.language.editor.gutter.GutterIconNavigationHandler;
 import consulo.language.editor.gutter.LineMarkerInfo;
 import consulo.language.editor.gutter.LineMarkerProvider;
 import consulo.language.psi.PsiElement;
+import consulo.ui.event.ComponentEvent;
 import org.antlr.intellij.plugin.psi.RuleSpecNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.awt.event.MouseEvent;
 
 public abstract class ANTLRv4LineMarkerProvider implements LineMarkerProvider {
 	@Nullable
@@ -19,7 +18,7 @@ public abstract class ANTLRv4LineMarkerProvider implements LineMarkerProvider {
 		final GutterIconNavigationHandler<PsiElement> navHandler =
 			new GutterIconNavigationHandler<PsiElement>() {
 				@Override
-				public void navigate(MouseEvent e, PsiElement elt) {
+				public void navigate(ComponentEvent<?> e, PsiElement elt) {
 					System.out.println("don't click on me");
 				}
 			};
