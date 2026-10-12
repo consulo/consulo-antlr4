@@ -12,6 +12,7 @@ import consulo.codeEditor.Editor;
 import consulo.fileEditor.structureView.StructureViewModel;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
+import consulo.localize.LocalizeValue;
 import consulo.virtualFileSystem.VirtualFile;
 import jakarta.annotation.Nonnull;
 import org.antlr.intellij.plugin.ANTLRv4FileRoot;
@@ -24,46 +25,44 @@ import java.util.Collections;
 
 @ExtensionImpl
 public class ANTLRv4StructureViewFactory implements PsiStructureViewFactory {
-	/** fake a blank Treeview with a warning */
-	public static class DummyViewTreeElement extends PsiTreeElementBase<PsiElement>
-	{
-		public DummyViewTreeElement(PsiElement psiElement) {
-			super(psiElement);
-		}
+    /**
+     * fake a blank Tree-view with a warning
+     */
+    public static class DummyViewTreeElement extends PsiTreeElementBase<PsiElement> {
+        public DummyViewTreeElement(PsiElement psiElement) {
+            super(psiElement);
+        }
 
-		@NotNull
-		@Override
-		public Collection<StructureViewTreeElement> getChildrenBase() {
-			return Collections.emptyList();
-		}
+        @NotNull
+        @Override
+        public Collection<StructureViewTreeElement> getChildrenBase() {
+            return Collections.emptyList();
+        }
 
-		@Nullable
-		@Override
-		public String getPresentableText() {
-			return "Sorry .g not supported (use .g4)";
-		}
-	}
+        @Override
+        public LocalizeValue getPresentableText() {
+            return LocalizeValue.localizeTODO("Sorry .g not supported (use .g4)");
+        }
+    }
 
-	@Nullable
     @Override
     public StructureViewBuilder getStructureViewBuilder(final PsiFile psiFile) {
         return new TreeBasedStructureViewBuilder() {
-			@NotNull
-			@Override
-			public StructureViewModel createStructureViewModel(@Nullable Editor editor) {
-				VirtualFile grammarFile = psiFile.getVirtualFile();
-				if ( grammarFile==null || !grammarFile.getName().endsWith(".g4") ) {
-					return new StructureViewModelBase(psiFile, new DummyViewTreeElement(psiFile));
-				}
-                return new ANTLRv4StructureViewModel((ANTLRv4FileRoot)psiFile);
-			}
+            @NotNull
+            @Override
+            public StructureViewModel createStructureViewModel(@Nullable Editor editor) {
+                VirtualFile grammarFile = psiFile.getVirtualFile();
+                if (grammarFile == null || !grammarFile.getName().endsWith(".g4")) {
+                    return new StructureViewModelBase(psiFile, new DummyViewTreeElement(psiFile));
+                }
+                return new ANTLRv4StructureViewModel((ANTLRv4FileRoot) psiFile);
+            }
         };
     }
 
-	@Nonnull
-	@Override
-	public Language getLanguage()
-	{
-		return ANTLRv4Language.INSTANCE;
-	}
+    @Nonnull
+    @Override
+    public Language getLanguage() {
+        return ANTLRv4Language.INSTANCE;
+    }
 }
