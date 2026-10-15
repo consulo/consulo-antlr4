@@ -1,6 +1,7 @@
 package consulo.antlr.toolWindow;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.antlr.ANTLR4FileTypeDetectService;
 import consulo.antlr4.icon.Antlr4IconGroup;
 import consulo.localize.LocalizeValue;
 import consulo.project.Project;
@@ -56,5 +57,10 @@ public class ANTLR4ToolWindowFactory implements ToolWindowFactory {
     @Override
     public LocalizeValue getDisplayName() {
         return LocalizeValue.localizeTODO("ANTLR4");
+    }
+
+    @Override
+    public boolean validate(Project project) {
+        return project.getInstance(ANTLR4FileTypeDetectService.class).hasANTLR4File();
     }
 }
