@@ -50,6 +50,7 @@ import org.antlr.v4.parse.ANTLRParser;
 import org.antlr.v4.tool.Grammar;
 import org.antlr.v4.tool.LexerGrammar;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -201,11 +202,17 @@ public class ANTLRv4PluginController implements Disposable {
         }
         if (newFile.getName().endsWith(".g")) {
             LOG.info("currentEditorFileChangedEvent ANTLR 4 cannot handle .g files, only .g4");
-            getPreviewWindow().hide(null);
+            ToolWindow previewWindow = getPreviewWindow();
+            if (previewWindow != null) {
+                previewWindow.hide(null);
+            }
             return;
         }
         if (!newFile.getName().endsWith(".g4")) {
-            getPreviewWindow().hide(null);
+            ToolWindow previewWindow = getPreviewWindow();
+            if (previewWindow != null) {
+                previewWindow.hide(null);
+            }
             return;
         }
         PreviewState previewState = getPreviewState(newFile);
@@ -231,7 +238,10 @@ public class ANTLRv4PluginController implements Disposable {
         String grammarFileName = vfile.getPath();
         LOG.info("editorFileClosedEvent " + grammarFileName + " " + myProject.getName());
         if (!vfile.getName().endsWith(".g4")) {
-            getPreviewWindow().hide(null);
+            ToolWindow previewWindow = getPreviewWindow();
+            if (previewWindow != null) {
+                previewWindow.hide(null);
+            }
             return;
         }
 
@@ -249,7 +259,10 @@ public class ANTLRv4PluginController implements Disposable {
         grammarToPreviewState.remove(grammarFileName);
 
         // close tool window
-        getPreviewWindow().hide(null);
+        ToolWindow previewWindow = getPreviewWindow();
+        if (previewState != null) {
+            previewWindow.hide(null);
+        }
     }
 
     /**
@@ -393,7 +406,7 @@ public class ANTLRv4PluginController implements Disposable {
         });
     }
 
-    public ToolWindow getPreviewWindow() {
+    public @Nullable ToolWindow getPreviewWindow() {
         return ToolWindowManager.getInstance(myProject).getToolWindow(PREVIEW_WINDOW_ID);
     }
 
