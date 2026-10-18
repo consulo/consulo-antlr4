@@ -1,9 +1,9 @@
 package org.antlr.intellij.plugin.actions;
 
 import consulo.application.progress.ProgressManager;
+import consulo.localize.LocalizeValue;
 import consulo.logging.Logger;
-import consulo.project.ui.notification.NotificationType;
-import consulo.project.ui.notification.Notifications;
+import consulo.project.ui.notification.NotificationService;
 import consulo.ui.ex.action.AnAction;
 import consulo.language.editor.PlatformDataKeys;
 import consulo.document.Document;
@@ -11,7 +11,6 @@ import consulo.document.FileDocumentManager;
 import consulo.application.dumb.DumbAware;
 import consulo.project.Project;
 import consulo.language.psi.PsiDocumentManager;
-import consulo.project.ui.notification.Notification;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.virtualFileSystem.LocalFileSystem;
@@ -84,12 +83,10 @@ public class GenerateParserAction extends AnAction implements DumbAware, AnActio
 			generatedFiles.add(new File(gen.getOutputDirName()));
 			LocalFileSystem.getInstance().refreshIoFiles(generatedFiles, true, true, null);
 			// pop up a notification
-			Notification notification =
-				new Notification(RunANTLROnGrammarFile.groupDisplayId,
-								 "parser for " + grammarFile.getName() + " generated",
-								 "to " + gen.getOutputDirName(),
-								 NotificationType.INFORMATION);
-			Notifications.Bus.notify(notification, project);
+            NotificationService.getInstance().newInfo(RunANTLROnGrammarFile.groupDisplayId)
+                .title(LocalizeValue.localizeTODO("parser for " + grammarFile.getName() + " generated"))
+                .content(LocalizeValue.localizeTODO("to " + gen.getOutputDirName()))
+                .notify(project);
 		}
 	}
 }

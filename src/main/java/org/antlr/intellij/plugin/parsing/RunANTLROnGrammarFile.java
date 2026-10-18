@@ -3,13 +3,12 @@ package org.antlr.intellij.plugin.parsing;
 import consulo.application.progress.ProgressIndicator;
 import consulo.application.progress.Task;
 import consulo.execution.ui.console.ConsoleViewContentType;
+import consulo.localize.LocalizeValue;
 import consulo.logging.Logger;
 import consulo.module.content.ProjectRootManager;
 import consulo.project.Project;
-import consulo.project.ui.notification.Notification;
 import consulo.project.ui.notification.NotificationGroup;
-import consulo.project.ui.notification.NotificationType;
-import consulo.project.ui.notification.Notifications;
+import consulo.project.ui.notification.NotificationService;
 import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import org.antlr.intellij.plugin.ANTLRv4PluginController;
@@ -147,12 +146,11 @@ public class RunANTLROnGrammarFile extends Task.Modal {
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             String msg = sw.toString();
-            Notification notification =
-                new Notification(groupDisplayId,
-                    "can't generate parser for " + vfile.getName(),
-                    e.toString(),
-                    NotificationType.INFORMATION);
-            Notifications.Bus.notify(notification, project);
+            NotificationService.getInstance()
+                .newInfo(groupDisplayId)
+                .title(LocalizeValue.localizeTODO("can't generate parser for " + vfile.getName()))
+                .content(LocalizeValue.of(e))
+                .notify(project);
             controller.printToConsole(c -> c.print(timeStamp + ": antlr4 " + msg + "\n", ConsoleViewContentType.SYSTEM_OUTPUT));
             listener.hasOutput = true; // show console below
         }
