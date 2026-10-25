@@ -26,6 +26,7 @@ import consulo.ui.style.StandardColors;
 import consulo.util.dataholder.Key;
 import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.VirtualFile;
+import consulo.util.io.FileUtil;
 import org.antlr.intellij.adaptor.parser.SyntaxError;
 import org.antlr.intellij.plugin.ANTLRv4PluginController;
 import org.antlr.intellij.plugin.Icons;
@@ -112,24 +113,18 @@ public class InputPanel {
 				singleFileDescriptor,
 				TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
 			) {
-				protected void onFileChoosen(VirtualFile chosenFile) {
-					// In 13.x, this is defined but they fixed typo (onFileChosen) and
-					// deprecated. In 15.x this method is gone so I add back for
-					// backward compatibility.
+				@Override
+				protected void onFileChosen(Path chosenFile) {
 					choose(chosenFile);
 				}
 
-				protected void onFileChosen(@NotNull VirtualFile chosenFile) {
-					choose(chosenFile);
-				}
-
-				protected void choose(VirtualFile chosenFile) {
+				protected void choose(Path chosenFile) {
 					// this next line is the code taken from super; pasted in
 					// to avoid compile error on super.onFileCho[o]sen
 					TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT.setText(fileChooser.getChildComponent(),
 					                                                    chosenFileToResultingText(chosenFile));
 					if ( previewState!=null ) {
-						previewState.inputFileName = chosenFile.getPath();
+						previewState.inputFileName = FileUtil.toSystemIndependentName(chosenFile.toString());
 					}
 					selectFileEvent();
 				}
