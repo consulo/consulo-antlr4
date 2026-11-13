@@ -13,12 +13,12 @@ import consulo.project.Project;
 import consulo.language.psi.PsiDocumentManager;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.ui.ex.action.AnActionWithSyncUpdate;
-import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.RefreshQueue;
 import consulo.virtualFileSystem.VirtualFile;
 import org.antlr.intellij.plugin.configdialogs.ConfigANTLRPerGrammar;
 import org.antlr.intellij.plugin.parsing.RunANTLROnGrammarFile;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -79,9 +79,9 @@ public class GenerateParserAction extends AnAction implements DumbAware, AnActio
 			ProgressManager.getInstance().run(gen); //, "Generating", canBeCancelled, e.getData(PlatformDataKeys.PROJECT));
 
 			// refresh from disk to see new files
-			Set<File> generatedFiles = new HashSet<File>();
-			generatedFiles.add(new File(gen.getOutputDirName()));
-			LocalFileSystem.getInstance().refreshIoFiles(generatedFiles, true, true, null);
+			Set<Path> generatedFiles = new HashSet<Path>();
+			generatedFiles.add(Path.of(gen.getOutputDirName()));
+			RefreshQueue.getInstance().refreshPaths(true, true, null, generatedFiles);
 			// pop up a notification
             NotificationService.getInstance().newInfo(RunANTLROnGrammarFile.groupDisplayId)
                 .title(LocalizeValue.localizeTODO("parser for " + grammarFile.getName() + " generated"))
